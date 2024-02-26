@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
-import { hashFunction } from "./functions/hash";
 import { sign } from "hono/jwt";
+import { hashFunction } from "./functions/hash";
 
 const app = new Hono<{
   Bindings: {
@@ -34,8 +34,24 @@ app.post("/api/v1/signup", async (c) => {
   }
 });
 
-app.post("/api/v1/signin", (c) => {
-  return c.text("signin route");
+app.post("/api/v1/signin", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const body = await c.req.json();
+  const hashedPass = await hashFunction(body.password);
+  const user = await prisma.user.findUnique({
+    where: {
+      email: body.email,
+      password: hashedPass,
+    },
+  });
+  if(!user){
+    c.status(403);
+    return c.json({error: "User doesn't exist."})
+  }
+  const jwtToken = await sign({ id: user.id }, c.env.JWT_SECRET);
+  return c.json({ jwtToken });
 });
 
 app.get("/api/v1/blog/:id", (c) => {
