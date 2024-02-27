@@ -28,10 +28,13 @@ blogRouter.use(async (c) => {
   c.set("userId", payload.id);
 });
 
-blogRouter.get("/:id", (c) => {
+blogRouter.get("/:id", async (c) => {
   const id = c.req.param("id");
-  console.log(id);
-  return c.text("get blog route");
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const post = await prisma.post.findUnique({where : {id : id}})
+  return c.json(post);
 });
 
 blogRouter.post("/", async (c) => {
