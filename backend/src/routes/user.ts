@@ -2,9 +2,9 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { hashFunction } from "../functions/hash";
-import { sign, verify } from "hono/jwt";
+import { sign } from "hono/jwt";
 import Bindings from "../bindings";
-
+import { signinInput,signupInput } from "@arnavitis/medium-common";
 const userRouter = new Hono<{
   Bindings: Bindings;
 }>();
@@ -14,6 +14,12 @@ userRouter.post("/signup", async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
   const body = await c.req.json();
+
+  const {success} = signupInput.safeParse(body);
+  if(!success){
+    c.status(400);
+    return c.json({ error: "Invalid Input" });
+  }  
 
   const hashedPass = await hashFunction(body.password);
   try {
@@ -38,6 +44,12 @@ userRouter.post("/signin", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+
+  const {success} = signinInput.safeParse(body);
+  if(!success){
+    c.status(400);
+    return c.json({ error: "Invalid Input" });
+  }  
 
   const hashedPass = await hashFunction(body.password);
   const user = await prisma.user.findUnique({
