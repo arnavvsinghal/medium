@@ -14,19 +14,21 @@ export const signinInput = z.object({
 export type SigninType = z.infer<typeof signinInput>;
 
 export const createPostInput = z.object({
-    title: z.string(),
-    content: z.string(),
+  title: z.string(),
+  content: z.string(),
 });
 export type CreatePostType = z.infer<typeof createPostInput>;
 
 export const updatePostInput = z.union([
-    z.object({
-        title: z.string(),
-        content: z.string().optional(),
-    }),
-    z.object({
-        title: z.string().optional(),
-        content: z.string(),
-    }),
+  z.object({
+    id: z.string(),
+    title: z.string(),
+    content: z.string().optional(),
+  }),
+  z.object({
+    id: z.string(),
+    title: z.string().optional(),
+    content: z.string(),
+  }),
 ]);
 export type UpdatePostType = z.infer<typeof updatePostInput>;
