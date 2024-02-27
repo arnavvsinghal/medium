@@ -3,12 +3,10 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { hashFunction } from "../functions/hash";
 import { sign, verify } from "hono/jwt";
+import Bindings from "../bindings";
 
 const userRouter = new Hono<{
-  Bindings: {
-    DATABASE_URL: string;
-    JWT_SECRET: string;
-  };
+  Bindings: Bindings;
 }>();
 
 userRouter.post("/signup", async (c) => {
@@ -17,7 +15,7 @@ userRouter.post("/signup", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
-  
+
   const hashedPass = await hashFunction(body.password);
   try {
     const user = await prisma.user.create({
@@ -58,9 +56,8 @@ userRouter.post("/signin", async (c) => {
 });
 
 
-userRouter.all("/",async (c)=>{
+userRouter.get("/",async (c)=>{
     const user = await c.req.json();
-    console.log("HEllo");
     return c.text("yo");
 })
 export default userRouter;

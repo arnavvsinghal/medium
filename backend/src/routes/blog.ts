@@ -2,18 +2,16 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
+import Bindings from "../bindings";
 
 const blogRouter = new Hono<{
-  Bindings: {
-    DATABASE_URL: string;
-    JWT_SECRET: string;
-  };
+  Bindings: Bindings;
   Variables: {
     userId: string;
   };
 }>();
 
-blogRouter.use(async (c) => {
+blogRouter.use(async (c,next) => {
   const jwt = c.req.header("Authorization");
   if (!jwt) {
     c.status(401);
@@ -26,6 +24,7 @@ blogRouter.use(async (c) => {
     return c.json({ error: "Unauthorized" });
   }
   c.set("userId", payload.id);
+  await next();
 });
 
 blogRouter.get("/:id", async (c) => {
@@ -33,7 +32,7 @@ blogRouter.get("/:id", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
-  const post = await prisma.post.findUnique({where : {id : id}})
+  const post = await prisma.post.findUnique({where : {id}})
   return c.json(post);
 });
 
