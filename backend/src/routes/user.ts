@@ -17,6 +17,7 @@ userRouter.post("/signup", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+  
   const hashedPass = await hashFunction(body.password);
   try {
     const user = await prisma.user.create({
@@ -38,7 +39,9 @@ userRouter.post("/signin", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
+
   const body = await c.req.json();
+
   const hashedPass = await hashFunction(body.password);
   const user = await prisma.user.findUnique({
     where: {
