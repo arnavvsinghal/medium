@@ -33,6 +33,9 @@ blogRouter.get("/:id", async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
   const post = await prisma.post.findUnique({where : {id}})
+  if(!post){
+    return c.json({error : "Blog doesn't exist."})
+  }
   return c.json(post);
 });
 

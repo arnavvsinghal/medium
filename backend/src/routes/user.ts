@@ -13,7 +13,6 @@ userRouter.post("/signup", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
-
   const body = await c.req.json();
 
   const hashedPass = await hashFunction(body.password);
@@ -44,20 +43,18 @@ userRouter.post("/signin", async (c) => {
   const user = await prisma.user.findUnique({
     where: {
       email: body.email,
-      password: hashedPass,
     },
   });
   if (!user) {
     c.status(403);
     return c.json({ error: "User doesn't exist." });
   }
+  if(user.password!=hashedPass){
+    c.status(403);
+    return c.json({ error: "Incorrect Password" });
+  }
   const jwtToken = await sign({ id: user.id }, c.env.JWT_SECRET);
   return c.json({ jwtToken });
 });
 
-
-userRouter.get("/",async (c)=>{
-    const user = await c.req.json();
-    return c.text("yo");
-})
 export default userRouter;

@@ -4,10 +4,10 @@ import blogRouter from "./routes/blog";
 import Bindings from "./bindings";
 
 export const app = new Hono<{
-  Bindings: Bindings;
+  Bindings: Bindings
 }>();
 
 app.route("/api/v1/user", userRouter);
-app.route('/api/v1/blog', blogRouter)
+app.route("/api/v1/blog", blogRouter);
 
 export default app;
