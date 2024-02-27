@@ -19,13 +19,13 @@ blogRouter.use(async (c) => {
     c.status(401);
     return c.json({ error: "Unauthorized" });
   }
-  const token = jwt.split(' ')[1];
-  const payload = await verify(token,c.env.JWT_SECRET);
-  if(!payload){
+  const token = jwt.split(" ")[1];
+  const payload = await verify(token, c.env.JWT_SECRET);
+  if (!payload) {
     c.status(401);
     return c.json({ error: "Unauthorized" });
-  } 
-  c.set('userId',payload.id);
+  }
+  c.set("userId", payload.id);
 });
 
 blogRouter.get("/:id", (c) => {
@@ -41,7 +41,7 @@ blogRouter.post("/", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
-  
+
   const post = await prisma.post.create({
     data: {
       title: body.title,
@@ -50,12 +50,31 @@ blogRouter.post("/", async (c) => {
     },
   });
   return c.json({
-      id: post.id,
+    id: post.id,
   });
 });
 
-blogRouter.put("/", (c) => {
-  return c.text("blog put");
+blogRouter.put("/", async (c) => {
+  const userId = c.get("userId");
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const body = await c.req.json();
+
+  const post = await prisma.post.update({
+    where: {
+      id: body.id,
+      authorId: userId,
+    },
+    data: {
+      title: body.title,
+      content: body.content,
+    },
+  });
+  return c.json({
+    id: post.id,
+  });
 });
 
 export default blogRouter;
