@@ -1,10 +1,10 @@
 import { Hono } from "hono";
 import userRouter from "./routes/user";
 import blogRouter from "./routes/blog";
-import Bindings from "./bindings";
+import {Bindings} from "./context";
 
 export const app = new Hono<{
-  Bindings: Bindings
+  Bindings: Bindings;
 }>();
 
 app.route("/api/v1/user", userRouter);

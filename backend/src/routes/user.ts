@@ -3,31 +3,29 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { hashFunction } from "../functions/hash";
 import { sign } from "hono/jwt";
-import Bindings from "../bindings";
-import { signinInput,signupInput } from "@arnavitis/medium-common";
-const userRouter = new Hono<{
-  Bindings: Bindings;
-}>();
 
-userRouter.post("/signup", async (c) => {
+import { userContext } from "../context";
+import {
+  userSignupValidation,
+  userSigninValidation,
+} from "../middlewares/userMiddlewares";
+
+const userRouter = new Hono<userContext>();
+
+userRouter.post("/signup", userSignupValidation, async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
-  const body = await c.req.json();
 
-  const {success} = signupInput.safeParse(body);
-  if(!success){
-    c.status(400);
-    return c.json({ error: "Invalid Input" });
-  }  
+  const body = c.get("body");
 
   const hashedPass = await hashFunction(body.password);
   try {
     const user = await prisma.user.create({
       data: {
+        name: body.name,
         email: body.email,
         password: hashedPass,
-        name: body.name,
       },
     });
     const jwtToken = await sign({ id: user.id }, c.env.JWT_SECRET);
@@ -38,18 +36,12 @@ userRouter.post("/signup", async (c) => {
   }
 });
 
-userRouter.post("/signin", async (c) => {
+userRouter.post("/signin", userSigninValidation, async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  const body = await c.req.json();
-
-  const {success} = signinInput.safeParse(body);
-  if(!success){
-    c.status(400);
-    return c.json({ error: "Invalid Input" });
-  }  
+  const body = c.get("body");
 
   const hashedPass = await hashFunction(body.password);
   const user = await prisma.user.findUnique({
@@ -61,7 +53,7 @@ userRouter.post("/signin", async (c) => {
     c.status(403);
     return c.json({ error: "User doesn't exist." });
   }
-  if(user.password!=hashedPass){
+  if (user.password != hashedPass) {
     c.status(403);
     return c.json({ error: "Incorrect Password" });
   }

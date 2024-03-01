@@ -1,51 +1,37 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { jwt } from "hono/jwt";
 
-import Bindings from "../bindings";
-import { createPostInput,updatePostInput } from "@arnavitis/medium-common";
+import { blogContext } from "../context";
 
-const blogRouter = new Hono<{
-  Bindings: Bindings;
-  Variables: {
-    userId: string;
-  };
-}>();
+import {
+  blogAuth,
+  blogCreateValidation,
+  blogUpdateValidation,
+} from "../middlewares/blogMiddlewares";
 
-blogRouter.use(
-  (c, next) => {
-    const jwtMiddleware = jwt({
-      secret: c.env.JWT_SECRET,
-    })
-    return jwtMiddleware(c, next)
-  }
-)
+const blogRouter = new Hono<blogContext>();
 
 blogRouter.get("/:id", async (c) => {
   const id = c.req.param("id");
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
-  const post = await prisma.post.findUnique({where : {id}})
-  if(!post){
-    return c.json({error : "Blog doesn't exist."})
+  const post = await prisma.post.findUnique({ where: { id } });
+  if (!post) {
+    return c.json({ error: "Blog doesn't exist." });
   }
   return c.json(post);
 });
 
-blogRouter.post("/", async (c) => {
+blogRouter.post("/", blogAuth, blogCreateValidation, async (c) => {
   const userId = c.get("jwtPayload").id;
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
-  const body = await c.req.json();
 
-  const {success} = createPostInput.safeParse(body);
-  if(!success){
-    c.status(400);
-    return c.json({ error: "Invalid Input" });
-  }  
+  const body = c.get("body");
+
   const post = await prisma.post.create({
     data: {
       title: body.title,
@@ -58,19 +44,14 @@ blogRouter.post("/", async (c) => {
   });
 });
 
-blogRouter.put("/", async (c) => {
+blogRouter.put("/", blogAuth, blogUpdateValidation, async (c) => {
   const userId = c.get("jwtPayload").id;
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
-  const body = await c.req.json();
+  const body = c.get("body");
 
-  const {success} = updatePostInput.safeParse(body);
-  if(!success){
-    c.status(400);
-    return c.json({ error: "Invalid Input" });
-  }  
   const post = await prisma.post.update({
     where: {
       id: body.id,
