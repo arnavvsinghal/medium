@@ -1,9 +1,11 @@
+import Landing from "./pages/Landing";
+
 function App() {
   return (
-      <div>
-        Hi!
-      </div>
-  )
+    <div>
+      <Landing/>
+    </div>
+  );
 }
 
-export default App
+export default App;
