@@ -7,7 +7,7 @@ interface LandingProps {}
 const Landing: FunctionComponent<LandingProps> = () => {
   return (
     <>
-      <div className="flex flex-col justify-center items-center h-[100vh] bg-bgmain p-4">
+      <div className="flex flex-col justify-center items-center h-screen bg-bgmain p-4">
         <BackgroundBeams />
         <h1 className="z-10 text-6xl sm:text-7xl bg-clip-text text-transparent bg-gradient-to-b from-textmain to-tertiary font-bold text-center">
           Bitwise
