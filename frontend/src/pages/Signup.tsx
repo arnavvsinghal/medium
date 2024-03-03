@@ -1,4 +1,4 @@
-// import { BackgroundBeams } from "@/components/ui/background-beams";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 import SignUpForm from "@/components/ui/signup-form";
 import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
 
@@ -12,6 +12,7 @@ const SignUp: FunctionComponent<SignUpProps> = () => {
       ];
   return (
     <div className="h-screen flex justify-evenly items-center bg-bgmain">
+      <BackgroundBeams/>
       <div className="w-1/2 hidden md:block">
         <TypewriterEffectSmooth words={words} />
       </div>

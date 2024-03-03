@@ -1,4 +1,5 @@
 import { FunctionComponent } from "react";
+import { Link } from "react-router-dom";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { Button } from "@/components/ui/button";
 
@@ -13,16 +14,20 @@ const Landing: FunctionComponent<LandingProps> = () => {
           Bitwise
         </h1>
         <p className="text-neutral-500 max-w-xl my-2 text-sm text-center sm:text-lg z-10">
-          Welcome to Bitwise! Get ready to left shift your knowledge and right
+          Left shift your knowledge, right
           shift your distractions.
         </p>
         <div className="mt-4">
-          <Button className={"mx-4"} size={"lg"} variant={"secondary"}>
-            Signup
-          </Button>
-          <Button className={"mx-4"} size={"lg"} variant={"ghost"}>
-            SignIn
-          </Button>
+          <Link to={"/signup"}>
+            <Button className={"mx-4"} size={"lg"} variant={"secondary"}>
+              Sign Up
+            </Button>
+          </Link>
+          <Link to={"/signin"}>
+            <Button className={"mx-4"} size={"lg"} variant={"ghost"}>
+              Sign In
+            </Button>
+          </Link>
         </div>
       </div>
     </>
