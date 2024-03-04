@@ -12,6 +12,31 @@ import {
 
 const blogRouter = new Hono<blogContext>();
 
+blogRouter.use(blogAuth);
+
+blogRouter.get("/bulk", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const blogs = await prisma.post.findMany({
+    select: {
+      id: true,
+      title: true,
+      content: true,
+      published: true,
+      author: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+  return c.json({
+    blogs,
+  });
+});
+
 blogRouter.get("/:id", async (c) => {
   const id = c.req.param("id");
   const prisma = new PrismaClient({
@@ -24,7 +49,7 @@ blogRouter.get("/:id", async (c) => {
   return c.json(post);
 });
 
-blogRouter.post("/", blogAuth, blogCreateValidation, async (c) => {
+blogRouter.post("/", blogCreateValidation, async (c) => {
   const userId = c.get("jwtPayload").id;
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -44,7 +69,7 @@ blogRouter.post("/", blogAuth, blogCreateValidation, async (c) => {
   });
 });
 
-blogRouter.put("/", blogAuth, blogUpdateValidation, async (c) => {
+blogRouter.put("/", blogUpdateValidation, async (c) => {
   const userId = c.get("jwtPayload").id;
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
