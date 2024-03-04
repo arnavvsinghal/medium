@@ -2,14 +2,14 @@ import { z } from "zod";
 
 export const signupInput = z.object({
   email: z.string().email(),
-  password: z.string().min(8, { message: "Must be 8 or more characters long" }),
-  name: z.string().min(3, { message: "Must be 3 or more characters long" }),
+  password: z.string().min(8, { message: "Password must be 8 or more characters long" }),
+  name: z.string().min(3, { message: "Name must be 3 or more characters long" }),
 });
 export type SignupType = z.infer<typeof signupInput>;
 
 export const signinInput = z.object({
   email: z.string().email(),
-  password: z.string().min(8, { message: "Must be 8 or more characters long" }),
+  password: z.string().min(8, { message: "Password must be 8 or more characters long" }),
 });
 export type SigninType = z.infer<typeof signinInput>;
 
