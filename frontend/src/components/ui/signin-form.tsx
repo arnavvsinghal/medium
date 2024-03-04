@@ -3,10 +3,11 @@ import { Label } from "./label";
 import { Input } from "./input";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
-import { Link , useNavigate} from "react-router-dom";
-import { SigninType } from "@arnavitis/medium-common";
+import { Link, useNavigate } from "react-router-dom";
+import { SigninType, signinInput } from "@arnavitis/medium-common";
 import axios from "axios";
 import { BACKEND_URL } from "@/config";
+import { toast, Toaster } from "sonner";
 
 interface SignInFormProps {}
 
@@ -26,6 +27,12 @@ const SignInForm: FunctionComponent<SignInFormProps> = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const res = signinInput.safeParse(formData);
+    if (!res.success) {
+      return toast.error(res.error.issues[0].message, {
+        position: "top-center",
+      });
+    }
     try {
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/user/signin`,
@@ -33,9 +40,13 @@ const SignInForm: FunctionComponent<SignInFormProps> = () => {
       );
       localStorage.setItem("token", response.data.jwtToken);
       navigate("/");
-      alert("Success!");
-    } catch (err: any) {
-      alert(err.response.data.message);
+      toast.success("Success!",{
+        position : "top-center"
+      })
+    } catch (e) {
+      toast.error("Error While Signing In!",{
+        position : "top-center"
+      })
     }
   };
   return (
@@ -46,6 +57,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = () => {
       </p>
 
       <form className="mt-8" onSubmit={handleSubmit}>
+        <Toaster richColors />
         <LabelInputContainer className="mb-4">
           <Label className={"text-textdark"} htmlFor="email">
             Email Address

@@ -4,9 +4,10 @@ import { Input } from "./input";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import { Link, useNavigate } from "react-router-dom";
-import { SignupType } from "@arnavitis/medium-common";
+import { SignupType, signupInput } from "@arnavitis/medium-common";
 import axios from "axios";
 import { BACKEND_URL } from "@/config";
+import { toast, Toaster } from "sonner";
 
 interface SignUpFormProps {}
 
@@ -27,16 +28,26 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const res = signupInput.safeParse(formData);
+    if (!res.success) {
+      return toast.error(res.error.issues[0].message, {
+        position: "top-center",
+      });
+    }
     try {
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/user/signup`,
         formData
       );
       localStorage.setItem("token", response.data.jwtToken);
-      alert("Success!");
+      toast.success("Success!", {
+        position: "top-center",
+      });
       navigate("/");
-    } catch (err: any) {
-      alert(err.response.data.message);
+    } catch (e) {
+      toast.error("Error While Signing Up!", {
+        position: "top-center",
+      });
     }
   };
   return (
@@ -47,6 +58,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
         bit at a time!
       </p>
       <form className="mt-8" onSubmit={handleSubmit}>
+        <Toaster richColors/>
         <LabelInputContainer className="mb-4">
           <Label className={"text-textdark"} htmlFor="email">
             Name
