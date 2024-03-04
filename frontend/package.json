@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@arnavitis/medium-common": "^1.0.2",
+    "@arnavitis/medium-common": "^1.0.3",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "axios": "^1.6.7",
