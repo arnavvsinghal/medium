@@ -8,7 +8,7 @@ import { SigninType, signinInput } from "@arnavitis/medium-common";
 import axios from "axios";
 import { BACKEND_URL } from "@/config";
 import { toast, Toaster } from "sonner";
-
+import { Loader2 } from "lucide-react";
 interface SignInFormProps {}
 
 const SignInForm: FunctionComponent<SignInFormProps> = () => {
@@ -17,6 +17,8 @@ const SignInForm: FunctionComponent<SignInFormProps> = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState<Boolean>(false);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
@@ -34,19 +36,19 @@ const SignInForm: FunctionComponent<SignInFormProps> = () => {
       });
     }
     try {
+      setLoading((loading) => !loading);
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/user/signin`,
         formData
       );
       localStorage.setItem("token", response.data.jwtToken);
+      setLoading((loading) => !loading);
       navigate("/");
-      toast.success("Success!",{
-        position : "top-center"
-      })
-    } catch (e) {
-      toast.error("Error While Signing In!",{
-        position : "top-center"
-      })
+    } catch (e : any) {
+      toast.error(e.response.data.error || "Error While Signing In!", {
+        position: "top-center",
+      });
+      setLoading((loading) => !loading);
     }
   };
   return (
@@ -82,12 +84,19 @@ const SignInForm: FunctionComponent<SignInFormProps> = () => {
             onChange={handleChange}
           />
         </LabelInputContainer>
-        <Button
-          className="flex w-full bg-textdark border-textdark text-textsecondary transition ease-in-out hover:scale-105"
-          variant={"default"}
-        >
-          Sign In
-        </Button>
+        {loading ? (
+          <Button disabled className="flex w-full justify-center">
+            <Loader2 className="h-10 py-2 mr-2 animate-spin" />
+            Please wait
+          </Button>
+        ) : (
+          <Button
+            className="flex w-full bg-textdark border-textdark text-textsecondary transition ease-in-out hover:scale-105"
+            variant={"default"}
+          >
+            Sign In
+          </Button>
+        )}
       </form>
       <p className="my-4 text-tertiary text-sm max-w-sm text-center">
         {" "}
