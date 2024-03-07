@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion} from "framer-motion";
+import { motion } from "framer-motion";
 
 export const TypewriterEffectSmooth = ({
   words,
@@ -48,7 +48,7 @@ export const TypewriterEffectSmooth = ({
   };
 
   return (
-    <div className={cn("flex justify-center space-x-1 my-6", className)}>
+    <div className={cn("flex justify-center space-x-1 my-3", className)}>
       <motion.div
         className="overflow-hidden pb-2"
         initial={{

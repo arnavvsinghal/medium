@@ -1,12 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import BlogCard from "@/components/ui/blogcard";
 import AppBar from "@/components/ui/appbar";
-import {
-  useRecoilState,
-  useRecoilStateLoadable,
-  useRecoilValue,
-  useRecoilValueLoadable,
-} from "recoil";
+import { useRecoilValue, useRecoilValueLoadable } from "recoil";
 import { blogAtomFamily } from "@/store/selectorFamily/blog";
 import { userAtom } from "@/store/atoms/user";
 import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
@@ -15,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { LabelInputContainer } from "@/components/ui/label-input-container";
 import { Loader2 } from "lucide-react";
 import { BACKEND_URL } from "@/config";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 interface CardProps {
   id: string;
   author: {
@@ -28,15 +24,27 @@ interface CardProps {
 interface BlogProps {}
 
 const Blog: FunctionComponent<BlogProps> = () => {
+  const val = useRecoilValueLoadable(blogAtomFamily(1));
+  const user = useRecoilValue(userAtom);
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState<Boolean>(false);
-  const [post, setPost] = useRecoilStateLoadable(blogAtomFamily(search));
 
-  const user = useRecoilValue(userAtom);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 3;
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = val.contents.blogs.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  console.log(val);
   const handleClick = () => {
-    // setLoading((loading)r => !loading);
-    // setPost(useRecoilValue(blogAtomFamily(search)));
+    setLoading((loading) => !loading);
+
     console.log(search);
   };
   const words = [
@@ -45,10 +53,10 @@ const Blog: FunctionComponent<BlogProps> = () => {
     },
   ];
   return (
-    <div className="bg-bgmain">
+    <div className="bg-bgmain h-screen">
       <AppBar />
       <TypewriterEffectSmooth words={words} />
-      <div className="flex items-center justify-center mx-auto">
+      <div className="flex items-center justify-center mx-auto mb-3">
         <LabelInputContainer className="w-4/5">
           <Input
             id="email"
@@ -74,9 +82,9 @@ const Blog: FunctionComponent<BlogProps> = () => {
         )}
       </div>
       <div className="flex flex-col items-center">
-        {post.state == "loading"
+        {val.state == "loading"
           ? null
-          : post.contents.data.blogs.map((blog: CardProps) => (
+          : currentItems.map((blog: CardProps) => (
               <div className="w-4/5">
                 <BlogCard
                   key={blog.id}
@@ -88,6 +96,31 @@ const Blog: FunctionComponent<BlogProps> = () => {
                 />
               </div>
             ))}
+      </div>
+      <div className="flex items-center">
+        {currentPage > 1 && (
+          <Button
+            onClick={() => {
+              setCurrentPage(currentPage - 1);
+            }}
+            variant="outline"
+            size="icon"
+          >
+            <ChevronLeft className="h-3 w-3" />
+          </Button>
+        )}
+
+        {currentPage < Math.ceil(val.contents.blogs.length / itemsPerPage) && (
+          <Button
+            onClick={() => {
+              setCurrentPage(currentPage + 1);
+            }}
+            variant="outline"
+            size="icon"
+          >
+            <ChevronRight className="h-3 w-3" />
+          </Button>
+        )}
       </div>
     </div>
   );
