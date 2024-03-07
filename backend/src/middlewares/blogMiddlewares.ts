@@ -2,7 +2,7 @@ import type { MiddlewareHandler } from "hono";
 import { jwt } from "hono/jwt";
 import { createPostInput, updatePostInput } from "@arnavitis/medium-common";
 
-export const blogAuth: MiddlewareHandler = async (c, next) => {
+export const jwtAuth: MiddlewareHandler = async (c, next) => {
   const jwtMiddleware = jwt({
     secret: c.env.JWT_SECRET,
   });

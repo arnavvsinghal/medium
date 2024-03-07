@@ -5,14 +5,14 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { blogContext } from "../context";
 
 import {
-  blogAuth,
+  jwtAuth,
   blogCreateValidation,
   blogUpdateValidation,
 } from "../middlewares/blogMiddlewares";
 
 const blogRouter = new Hono<blogContext>();
 
-blogRouter.use(blogAuth);
+// blogRouter.use(jwtAuth);
 
 blogRouter.get("/bulk", async (c) => {
   const prisma = new PrismaClient({
@@ -25,9 +25,11 @@ blogRouter.get("/bulk", async (c) => {
       title: true,
       content: true,
       published: true,
+      date: true,
       author: {
         select: {
           name: true,
+          id: true,
         },
       },
     },
@@ -50,7 +52,8 @@ blogRouter.get("/:id", async (c) => {
 });
 
 blogRouter.post("/", blogCreateValidation, async (c) => {
-  const userId = c.get("jwtPayload").id;
+  // const userId = c.get("jwtPayload").id;
+  const userId =  "35729e81-227f-4afb-9480-8a6d96ee5935";
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -62,6 +65,7 @@ blogRouter.post("/", blogCreateValidation, async (c) => {
       title: body.title,
       content: body.content,
       authorId: userId,
+      date: new Date(),
     },
   });
   return c.json({
