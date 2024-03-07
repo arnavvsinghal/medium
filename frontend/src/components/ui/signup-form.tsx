@@ -1,7 +1,6 @@
 import { ChangeEvent, FunctionComponent, useState } from "react";
 import { Label } from "./label";
 import { Input } from "./input";
-import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import { Link, useNavigate } from "react-router-dom";
 import { SignupType, signupInput } from "@arnavitis/medium-common";
@@ -9,10 +8,16 @@ import axios from "axios";
 import { BACKEND_URL } from "@/config";
 import { toast, Toaster } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useSetRecoilState } from "recoil";
+import { userAtom } from "@/store/atoms/user";
+import { LabelInputContainer } from "./label-input-container";
+
 interface SignUpFormProps {}
 
 const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
   const navigate = useNavigate();
+  const setUserAtom = useSetRecoilState(userAtom);
+
   const [formData, setFormData] = useState<SignupType>({
     name: "",
     email: "",
@@ -44,8 +49,8 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
       );
       localStorage.setItem("token", response.data.jwtToken);
       setLoading((loading) => !loading);
-      navigate("/");
-    } catch (e : any) {
+      navigate("/blog");
+    } catch (e: any) {
       toast.error(e.response.data.error || "Error While Signing Up!", {
         position: "top-center",
       });
@@ -118,20 +123,6 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
           Sign In!
         </Link>
       </p>
-    </div>
-  );
-};
-
-const LabelInputContainer = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
     </div>
   );
 };
