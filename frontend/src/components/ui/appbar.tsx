@@ -3,15 +3,16 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
 import { Button } from "./button";
 import AvatarImg from "./avatar";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValueLoadable } from "recoil";
 import { userAtom } from "@/store/atoms/user";
 import { Heading } from "./heading";
+import { Skeleton } from "./skeleton";
 
 interface AppBarProps {}
 
 const AppBar: FunctionComponent<AppBarProps> = () => {
   const navigate = useNavigate();
-  const { email } = useRecoilValue(userAtom);
+  const userData = useRecoilValueLoadable(userAtom);
   const handleClick = () => {
     localStorage.removeItem("token");
     navigate("/");
@@ -19,13 +20,15 @@ const AppBar: FunctionComponent<AppBarProps> = () => {
   return (
     <div>
       <div className="flex h-16 px-8 justify-between items-center bg-bgmain ">
-        <Heading className="text-4xl">
-          Bitwise
-        </Heading>
+        <Heading className="text-4xl">Bitwise</Heading>
         <HoverCard>
           <HoverCardTrigger>
             <div className="h-10 w-10">
-              <AvatarImg shape = "circle" email={email} />
+              {userData.state == "loading" ? (
+                <Skeleton className="h-full w-full rounded-full" />
+              ) : (
+                <AvatarImg shape="circle" email={userData.contents.email} />
+              )}
             </div>
           </HoverCardTrigger>
           <HoverCardContent className="bg-textmain border-textmain">
