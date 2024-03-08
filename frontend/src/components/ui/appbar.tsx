@@ -5,6 +5,7 @@ import AvatarImg from "./avatar";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userAtom } from "@/store/atoms/user";
+import { Heading } from "./heading";
 
 interface AppBarProps {}
 
@@ -18,9 +19,9 @@ const AppBar: FunctionComponent<AppBarProps> = () => {
   return (
     <div>
       <div className="flex h-16 px-8 justify-between items-center bg-bgmain ">
-        <h1 className="text-4xl bg-clip-text text-transparent bg-gradient-to-b from-textmain to-tertiary font-bold text-center">
+        <Heading className="text-4xl">
           Bitwise
-        </h1>
+        </Heading>
         <HoverCard>
           <HoverCardTrigger>
             <div className="h-10 w-10">

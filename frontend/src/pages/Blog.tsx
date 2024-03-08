@@ -2,7 +2,11 @@ import { FunctionComponent, useState } from "react";
 import BlogCard from "@/components/ui/blogcard";
 import AppBar from "@/components/ui/appbar";
 import { useRecoilValue, useRecoilValueLoadable } from "recoil";
-import { blogAtomFamily } from "@/store/selectorFamily/blog";
+import {
+  blogAtomFamily,
+  searchBlogSelector,
+  userBlogSelector,
+} from "@/store/selectorFamily/blog";
 import { userAtom } from "@/store/atoms/user";
 import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
 import { Input } from "@/components/ui/input";
@@ -11,6 +15,7 @@ import { LabelInputContainer } from "@/components/ui/label-input-container";
 import { Loader2 } from "lucide-react";
 import { BACKEND_URL } from "@/config";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import { Heading } from "@/components/ui/heading";
 
 interface CardProps {
   id: string;
@@ -29,32 +34,24 @@ const Blog: FunctionComponent<BlogProps> = () => {
   const user = useRecoilValue(userAtom);
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState<Boolean>(false);
-
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 3;
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = val.contents.blogs.slice(
+  let currentItems = val.contents.blogs.slice(
     indexOfFirstItem,
     indexOfLastItem
   );
-
   const handleClick = () => {
+    setCurrentPage(1);
     setLoading((loading) => !loading);
-
     console.log(search);
   };
-  const words = [
-    {
-      text: `Welcome ${user.name}!`,
-    },
-  ];
   return (
     <div className="flex flex-col justify-between bg-bgmain min-h-screen">
       <div className="flex-grow">
         <AppBar />
-        <TypewriterEffectSmooth words={words} />
+        <Heading className="text-5xl py-3">Welcome {user.name}!</Heading>
         <div className="flex items-center justify-center mx-auto mb-3">
           <LabelInputContainer className="w-4/5">
             <Input
