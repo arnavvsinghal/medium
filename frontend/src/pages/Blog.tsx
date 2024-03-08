@@ -11,6 +11,7 @@ import { LabelInputContainer } from "@/components/ui/label-input-container";
 import { Loader2 } from "lucide-react";
 import { BACKEND_URL } from "@/config";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+
 interface CardProps {
   id: string;
   author: {
@@ -39,9 +40,6 @@ const Blog: FunctionComponent<BlogProps> = () => {
     indexOfLastItem
   );
 
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  console.log(val);
   const handleClick = () => {
     setLoading((loading) => !loading);
 
@@ -53,74 +51,79 @@ const Blog: FunctionComponent<BlogProps> = () => {
     },
   ];
   return (
-    <div className="bg-bgmain h-screen">
-      <AppBar />
-      <TypewriterEffectSmooth words={words} />
-      <div className="flex items-center justify-center mx-auto mb-3">
-        <LabelInputContainer className="w-4/5">
-          <Input
-            id="email"
-            placeholder="Search for your favourite Blogs."
-            type="email"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </LabelInputContainer>
-        {loading ? (
-          <Button className={"mr-0"} size={"lg"} variant={"ghost"}>
-            <Loader2 className="h-10 py-2 mx-3 animate-spin" />
-          </Button>
-        ) : (
-          <Button
-            onClick={handleClick}
-            className={"mr-0"}
-            size={"lg"}
-            variant={"ghost"}
-          >
-            Search
-          </Button>
-        )}
+    <div className="flex flex-col justify-between bg-bgmain min-h-screen">
+      <div className="flex-grow">
+        <AppBar />
+        <TypewriterEffectSmooth words={words} />
+        <div className="flex items-center justify-center mx-auto mb-3">
+          <LabelInputContainer className="w-4/5">
+            <Input
+              id="email"
+              placeholder="Search for your favourite Blogs."
+              type="email"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </LabelInputContainer>
+          {loading ? (
+            <Button className={"mr-0"} size={"lg"} variant={"ghost"}>
+              <Loader2 className="h-10 py-2 mx-3 animate-spin" />
+            </Button>
+          ) : (
+            <Button
+              onClick={handleClick}
+              className={"mr-0"}
+              size={"lg"}
+              variant={"ghost"}
+            >
+              Search
+            </Button>
+          )}
+        </div>
+        <div className="flex flex-col items-center">
+          {val.state == "loading"
+            ? null
+            : currentItems.map((blog: CardProps) => (
+                <div className="w-4/5">
+                  <BlogCard
+                    key={blog.id}
+                    id={blog.author.id}
+                    name={blog.author.name}
+                    date={blog.date}
+                    title={blog.title}
+                    content={blog.content}
+                  />
+                </div>
+              ))}
+        </div>
       </div>
-      <div className="flex flex-col items-center">
-        {val.state == "loading"
-          ? null
-          : currentItems.map((blog: CardProps) => (
-              <div className="w-4/5">
-                <BlogCard
-                  key={blog.id}
-                  id={blog.author.id}
-                  name={blog.author.name}
-                  date={blog.date}
-                  title={blog.title}
-                  content={blog.content}
-                />
-              </div>
-            ))}
-      </div>
-      <div className="flex items-center">
-        {currentPage > 1 && (
-          <Button
-            onClick={() => {
-              setCurrentPage(currentPage - 1);
-            }}
-            variant="outline"
-            size="icon"
-          >
-            <ChevronLeft className="h-3 w-3" />
-          </Button>
-        )}
-
-        {currentPage < Math.ceil(val.contents.blogs.length / itemsPerPage) && (
-          <Button
-            onClick={() => {
-              setCurrentPage(currentPage + 1);
-            }}
-            variant="outline"
-            size="icon"
-          >
-            <ChevronRight className="h-3 w-3" />
-          </Button>
-        )}
+      <div className="flex items-center justify-center my-3">
+        <Button
+          className={
+            currentPage == 1 ? "pointer-events-none opacity-50 mx-2" : "mx-2"
+          }
+          onClick={() => {
+            setCurrentPage(currentPage - 1);
+          }}
+          variant="outline"
+          size="icon"
+        >
+          <ChevronLeft className="h-3 w-3" />
+        </Button>
+        <Button
+          className={
+            currentPage == Math.ceil(val.contents.blogs.length / itemsPerPage)
+              ? "pointer-events-none opacity-50 mx-2"
+              : "mx-2"
+          }
+          onClick={() => {
+            setCurrentPage(currentPage + 1);
+          }}
+          variant="outline"
+          size="icon"
+        >
+          <ChevronRight className="h-3 w-3" />
+        </Button>
       </div>
     </div>
   );

@@ -15,7 +15,6 @@ export const TypewriterEffectSmooth = ({
   className?: string;
   cursorClassName?: string;
 }) => {
-  // split text inside of words into array of characters
   const wordsArray = words.map((word) => {
     return {
       ...word,
@@ -64,7 +63,7 @@ export const TypewriterEffectSmooth = ({
         }}
       >
         <div
-          className="text-xs md:text-3xl lg:text-5xl font-bold"
+          className="text-xl md:text-3xl lg:text-5xl font-bold"
           style={{
             whiteSpace: "nowrap",
           }}
@@ -86,7 +85,7 @@ export const TypewriterEffectSmooth = ({
           repeatType: "reverse",
         }}
         className={cn(
-          "block rounded-sm w-[4px] h-4 md:h-9 lg:h-12 bg-quaternary",
+          "block rounded-sm w-[4px] h-7 md:h-9 lg:h-12 bg-quaternary",
           cursorClassName
         )}
       ></motion.span>
