@@ -1,9 +1,9 @@
 import { FunctionComponent, useState } from "react";
 import BlogCard from "@/components/ui/blogcard";
 import AppBar from "@/components/ui/appbar";
-import { useRecoilValueLoadable, useSetRecoilState } from "recoil";
+import { useRecoilValueLoadable } from "recoil";
 import {
-  blogAtomFamily, searchBlogSelector,
+  blogAtomFamily,
 } from "@/store/selectorFamily/blog";
 import { userAtom } from "@/store/atoms/user";
 import { Input } from "@/components/ui/input";

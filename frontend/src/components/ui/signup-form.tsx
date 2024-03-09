@@ -8,15 +8,12 @@ import axios from "axios";
 import { BACKEND_URL } from "@/config";
 import { toast, Toaster } from "sonner";
 import { Loader2 } from "lucide-react";
-import { useSetRecoilState } from "recoil";
-import { userAtom } from "@/store/atoms/user";
 import { LabelInputContainer } from "./label-input-container";
 
 interface SignUpFormProps {}
 
 const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
   const navigate = useNavigate();
-  const setUserAtom = useSetRecoilState(userAtom);
 
   const [formData, setFormData] = useState<SignupType>({
     name: "",
