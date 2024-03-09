@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
 import { Button } from "./button";
 import AvatarImg from "./avatar";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilValueLoadable } from "recoil";
 import { userAtom } from "@/store/atoms/user";
 import { Heading } from "./heading";
@@ -22,7 +22,7 @@ const AppBar: FunctionComponent<AppBarProps> = ({ variant }) => {
   return (
     <div>
       <div className="flex h-16 px-8 justify-between items-center bg-bgmain ">
-        <Heading className="text-4xl">Bitwise</Heading>
+        <Link to={"/blog"}><Heading className="text-4xl">Bitwise</Heading></Link>
         <div className="flex">
           {variant == "post" ? null : (
             <Button onClick={() => {
@@ -37,7 +37,7 @@ const AppBar: FunctionComponent<AppBarProps> = ({ variant }) => {
                 {userData.state == "loading" ? (
                   <Skeleton className="h-full w-full rounded-full" />
                 ) : (
-                  <AvatarImg shape="circle" email={userData.contents.email} />
+                  <AvatarImg shape="circle" id={userData.contents.id} />
                 )}
               </div>
             </HoverCardTrigger>

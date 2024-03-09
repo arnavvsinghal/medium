@@ -56,7 +56,7 @@ const Blog: FunctionComponent<BlogProps> = () => {
             />
           </LabelInputContainer>
           {loading ? (
-            <Button className={"mr-0"} size={"lg"} variant={"ghost"}>
+            <Button disabled className={"mr-0"} size={"lg"} variant={"ghost"}>
               <Loader2 className="h-10 py-2 mx-3 animate-spin" />
             </Button>
           ) : (

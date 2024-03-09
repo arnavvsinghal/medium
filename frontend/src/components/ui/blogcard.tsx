@@ -20,7 +20,7 @@ const BlogCard: FunctionComponent<BlogCardProps> = ({
   return (
     <div className="flex items-center bg-textsecondary p-5 text-textdark rounded-xl my-1">
       <div className="flex-shrink-0 h-32 w-32">
-        <AvatarImg shape="rounded" email={id} />
+        <AvatarImg shape="rounded" id={id} />
       </div>
       <div className="flex flex-col justify-between px-5">
         <div>

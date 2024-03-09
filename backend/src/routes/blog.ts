@@ -12,7 +12,7 @@ import {
 
 const blogRouter = new Hono<blogContext>();
 
-// blogRouter.use(jwtAuth);
+blogRouter.use(jwtAuth);
 
 blogRouter.get("/bulk", async (c) => {
   const prisma = new PrismaClient({
@@ -33,6 +33,9 @@ blogRouter.get("/bulk", async (c) => {
         },
       },
     },
+    orderBy: {
+      date: "desc",
+    },
   });
   return c.json({
     blogs,
@@ -52,8 +55,7 @@ blogRouter.get("/:id", async (c) => {
 });
 
 blogRouter.post("/", blogCreateValidation, async (c) => {
-  // const userId = c.get("jwtPayload").id;
-  const userId =  "35729e81-227f-4afb-9480-8a6d96ee5935";
+  const userId = c.get("jwtPayload").id;
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());

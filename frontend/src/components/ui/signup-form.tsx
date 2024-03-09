@@ -47,6 +47,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
         `${BACKEND_URL}/api/v1/user/signup`,
         formData
       );
+      localStorage.removeItem("token");
       localStorage.setItem("token", response.data.jwtToken);
       setLoading((loading) => !loading);
       navigate("/blog");

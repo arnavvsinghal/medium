@@ -2,12 +2,12 @@ import Avatar, { genConfig } from "react-nice-avatar";
 import { FunctionComponent } from "react";
 
 interface AvatarImgProps {
-  email: string;
+  id: string;
   shape : "circle" | "rounded" | "square"
 }
 
-const AvatarImg: FunctionComponent<AvatarImgProps> = ({ shape, email }) => {
-  const initialConfig = genConfig(email);
+const AvatarImg: FunctionComponent<AvatarImgProps> = ({ shape, id }) => {
+  const initialConfig = genConfig(id);
   const config = genConfig({
     ...initialConfig,
     sex: "man",

@@ -12,6 +12,7 @@ import {
 import { jwtAuth } from "../middlewares/blogMiddlewares";
 
 const userRouter = new Hono<userContext>();
+
 userRouter.get("/info", jwtAuth, async (c) => {
   const userId = c.get("jwtPayload").id;
   const prisma = new PrismaClient({
