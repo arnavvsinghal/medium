@@ -44,7 +44,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = () => {
       );
       localStorage.setItem("token", response.data.jwtToken);
       setLoading((loading) => !loading);
-      navigate("/blog");
+      navigate("/blogs");
     } catch (e: any) {
       toast.error(e.response.data.error || "Error While Signing In!", {
         position: "top-center",

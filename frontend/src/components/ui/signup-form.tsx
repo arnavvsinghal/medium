@@ -47,7 +47,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
       localStorage.removeItem("token");
       localStorage.setItem("token", response.data.jwtToken);
       setLoading((loading) => !loading);
-      navigate("/blog");
+      navigate("/blogs");
     } catch (e: any) {
       toast.error(e.response.data.error || "Error While Signing Up!", {
         position: "top-center",
