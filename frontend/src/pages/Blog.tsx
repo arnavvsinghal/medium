@@ -1,9 +1,9 @@
 import { FunctionComponent, useState } from "react";
 import BlogCard from "@/components/ui/blogcard";
 import AppBar from "@/components/ui/appbar";
-import { useRecoilValueLoadable } from "recoil";
+import { useRecoilValueLoadable, useSetRecoilState } from "recoil";
 import {
-  blogAtomFamily,
+  blogAtomFamily, searchBlogSelector,
 } from "@/store/selectorFamily/blog";
 import { userAtom } from "@/store/atoms/user";
 import { Input } from "@/components/ui/input";
@@ -36,13 +36,12 @@ const Blog: FunctionComponent<BlogProps> = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const handleClick = () => {
-    setCurrentPage(1);
-    console.log(search);
+
   };
   return (
     <div className="flex flex-col justify-between bg-bgmain min-h-screen">
       <div className="flex-grow">
-        <AppBar />
+        <AppBar variant="blog"/>
         <Heading className="text-5xl py-3">
           Welcome {user.contents.name}!
         </Heading>
