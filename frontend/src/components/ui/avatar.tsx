@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 
 interface AvatarImgProps {
   id: string;
-  shape : "circle" | "rounded" | "square"
+  shape: "circle" | "rounded" | "square";
 }
 
 const AvatarImg: FunctionComponent<AvatarImgProps> = ({ shape, id }) => {

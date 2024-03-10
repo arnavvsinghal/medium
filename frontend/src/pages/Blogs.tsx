@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "@/config";
+import usePagination from "@/hooks/usePagination";
 // useEffect(() => {
 //   const useEffectAsync = async () => {
 //     if (!localStorage.token) {
@@ -47,29 +48,23 @@ interface CardProps {
 }
 interface BlogsProps {}
 
-const usePagination = (currentPage: number, itemsPerPage : number) => {
-  const indexCalculation = () => {
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    return [indexOfFirstItem,indexOfLastItem];
-  }
-  const memoizedValue = useMemo(() => indexCalculation(), [currentPage]);
-  return memoizedValue;
-};
 const Blogs: FunctionComponent<BlogsProps> = () => {
   const navigate = useNavigate();
   const user = useRecoilValueLoadable(userAtom);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 3;
-  const [indexOfFirstItem, indexOfLastItem] = usePagination(currentPage, itemsPerPage);
+  const [indexOfFirstItem, indexOfLastItem] = usePagination(
+    currentPage,
+    itemsPerPage
+  );
   let debounceSearch = "";
   const [search, setSearch] = useState<string>("");
   const filteredBlogs = useRecoilValueLoadable(searchBlogSelector(search));
   const [loading, setLoading] = useState<Boolean>(false);
   const handleClick = () => {
+    setLoading((loading) => !loading);
     setSearch(debounceSearch);
-    console.log(search);
-    console.log(filteredBlogs);
+    setLoading((loading) => !loading);
   };
   return (
     <div className="flex flex-col justify-between bg-bgmain min-h-screen">

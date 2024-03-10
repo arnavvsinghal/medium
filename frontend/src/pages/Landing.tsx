@@ -10,12 +10,9 @@ const Landing = () => {
     <>
       <div className="flex flex-col justify-center items-center h-screen bg-bgmain p-4">
         <BackgroundBeams />
-        <Heading className="text-6xl sm:text-7xl">
-          Bitwise
-        </Heading>
+        <Heading className="text-6xl sm:text-7xl">Bitwise</Heading>
         <p className="text-neutral-500 max-w-xl my-2 text-sm text-center sm:text-lg z-10">
-          Left shift your knowledge, right
-          shift your distractions.
+          Left shift your knowledge, right shift your distractions.
         </p>
         <div className="mt-4">
           <Link to={"/signup"}>

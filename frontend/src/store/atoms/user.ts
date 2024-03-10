@@ -7,12 +7,12 @@ export const userAtom = atom({
   default: selector({
     key: "userAtom/Default",
     get: async () => {
-        const res = await axios.get(`${BACKEND_URL}/api/v1/user/info`,{
-          headers :{
-            Authorization : `Bearer ${localStorage.getItem("token")}`
-          } 
-        });
-        return res.data;
+      const res = await axios.get(`${BACKEND_URL}/api/v1/user/info`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      return res.data;
     },
   }),
 });
