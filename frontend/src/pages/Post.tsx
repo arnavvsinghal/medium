@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import AppBar from "@/components/ui/appbar";
 import AvatarImg from "@/components/ui/avatar";
 import { userAtom } from "@/store/atoms/user";
@@ -16,8 +16,8 @@ import { useNavigate } from "react-router-dom";
 interface PostProps {}
 
 const Post: FunctionComponent<PostProps> = () => {
-  const userData = useRecoilValueLoadable(userAtom);
   const navigate = useNavigate();
+  const userData = useRecoilValueLoadable(userAtom);
   const [loading, setLoading] = useState<Boolean>(false);
   let postData: CreatePostType = {
     title: "",
@@ -33,7 +33,7 @@ const Post: FunctionComponent<PostProps> = () => {
       });
       console.log(res);
       setLoading(false);
-      navigate("/blog");
+      navigate("/blogs");
     } catch (e: any) {
       toast.error(e.response.data.error || "Error While Posting!", {
         position: "top-center",

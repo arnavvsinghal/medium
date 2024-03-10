@@ -9,7 +9,7 @@ import { Heading } from "./heading";
 import { Skeleton } from "./skeleton";
 
 interface AppBarProps {
-  variant: "blog" | "post";
+  variant: "blog" | "post" | "edit";
 }
 
 const AppBar: FunctionComponent<AppBarProps> = ({ variant }) => {
@@ -22,13 +22,29 @@ const AppBar: FunctionComponent<AppBarProps> = ({ variant }) => {
   return (
     <div>
       <div className="flex h-16 px-8 justify-between items-center bg-bgmain ">
-        <Link to={"/blog"}><Heading className="text-4xl">Bitwise</Heading></Link>
+        <Link to={"/blogs"}>
+          <Heading className="text-4xl">Bitwise</Heading>
+        </Link>
         <div className="flex">
-          {variant == "post" ? null : (
-            <Button onClick={() => {
-              navigate("/post")
-            }} className={"mr-4"} variant={"outline"}>
+          {variant == "post" ? null : variant == "blog" ? (
+            <Button
+              onClick={() => {
+                navigate("/post");
+              }}
+              className={"mr-4"}
+              variant={"outline"}
+            >
               Publish
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                navigate("/post");
+              }}
+              className={"mr-4"}
+              variant={"outline"}
+            >
+              Edit
             </Button>
           )}
           <HoverCard>
