@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { useState } from "react";
 import AppBar from "@/components/ui/appbar";
 import AvatarImg from "@/components/ui/avatar";
 import { userAtom } from "@/store/atoms/user";
@@ -12,11 +12,10 @@ import { BACKEND_URL } from "@/config";
 import { CreatePostType } from "@arnavitis/medium-common";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
-interface PostProps {}
+import useCheckSignOut from "@/hooks/useCheckSignOut";
 
-const Post: FunctionComponent<PostProps> = () => {
-  const navigate = useNavigate();
+const Post = () => {
+  const navigate = useCheckSignOut();
   const userData = useRecoilValueLoadable(userAtom);
   const [loading, setLoading] = useState<Boolean>(false);
   let postData: CreatePostType = {
@@ -41,6 +40,9 @@ const Post: FunctionComponent<PostProps> = () => {
       setLoading(false);
     }
   };
+  if (userData.state == "hasError") {
+    return <div className="bg-bgmain h-screen"></div>;
+  }
   return (
     <div className="flex flex-col items-center bg-bgmain min-h-screen">
       <AppBar variant="post" />

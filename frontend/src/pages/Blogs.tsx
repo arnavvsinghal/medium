@@ -1,11 +1,8 @@
-import { FunctionComponent, useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import BlogCard from "@/components/ui/blogcard";
 import AppBar from "@/components/ui/appbar";
-import { Loadable, useRecoilValueLoadable, useSetRecoilState } from "recoil";
-import {
-  blogAtomFamily,
-  searchBlogSelector,
-} from "@/store/selectorFamily/blog";
+import { useRecoilValueLoadable } from "recoil";
+import { searchBlogSelector } from "@/store/selectorFamily/blog";
 import { userAtom } from "@/store/atoms/user";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -14,28 +11,9 @@ import { Loader2 } from "lucide-react";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { Heading } from "@/components/ui/heading";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { BACKEND_URL } from "@/config";
 import usePagination from "@/hooks/usePagination";
-// useEffect(() => {
-//   const useEffectAsync = async () => {
-//     if (!localStorage.token) {
-//       return navigate("/");
-//     }
-//     try {
-//       await axios.get(`${BACKEND_URL}/api/v1/user/me`, {
-//         headers: {
-//           Authorization: `Bearer ${localStorage.token}`,
-//         },
-//       });
-//     } catch (err) {
-//       localStorage.removeItem("token");
-//       navigate("/");
-//     }
-//   };
-//   useEffectAsync();
-// }, []);
+import useCheckSignOut from "@/hooks/useCheckSignOut";
+
 interface CardProps {
   id: string;
   author: {
@@ -46,11 +24,12 @@ interface CardProps {
   title: string;
   content: string;
 }
-interface BlogsProps {}
 
-const Blogs: FunctionComponent<BlogsProps> = () => {
-  const navigate = useNavigate();
+const Blogs = () => {
+  useCheckSignOut();
+  const [search, setSearch] = useState<string>("");
   const user = useRecoilValueLoadable(userAtom);
+  const filteredBlogs = useRecoilValueLoadable(searchBlogSelector(search));
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 3;
   const [indexOfFirstItem, indexOfLastItem] = usePagination(
@@ -58,14 +37,15 @@ const Blogs: FunctionComponent<BlogsProps> = () => {
     itemsPerPage
   );
   let debounceSearch = "";
-  const [search, setSearch] = useState<string>("");
-  const filteredBlogs = useRecoilValueLoadable(searchBlogSelector(search));
   const [loading, setLoading] = useState<Boolean>(false);
   const handleClick = () => {
     setLoading((loading) => !loading);
     setSearch(debounceSearch);
     setLoading((loading) => !loading);
   };
+  if (filteredBlogs.state == "hasError" || user.state == "hasError") {
+    return <div className="bg-bgmain h-screen"></div>;
+  }
   return (
     <div className="flex flex-col justify-between bg-bgmain min-h-screen">
       <div className="flex-grow">
