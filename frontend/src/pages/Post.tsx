@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppBar from "@/components/ui/appbar";
 import AvatarImg from "@/components/ui/avatar";
 import userAtom from "@/store/atom/user";
@@ -13,24 +13,52 @@ import { CreatePostType } from "@arnavitis/medium-common";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import useCheckSignOut from "@/hooks/useCheckSignOut";
+import { useSearchParams } from "react-router-dom";
+import specificBlogSelector from "@/store/selectorFamily/specificBlogSelector";
 
 const Post = () => {
   const navigate = useCheckSignOut();
   const userData = useRecoilValueLoadable(userAtom);
+  const [searchParams, _] = useSearchParams();
+  const id = searchParams.get("id") ?? "";
+  const blog = useRecoilValueLoadable(specificBlogSelector(id));
+  const blogExists: Boolean =
+    blog.state === "hasValue" && blog.contents.length ? true : false;
+  useEffect(() => {
+    if (
+      blog.state === "hasError" ||
+      (blog.state === "hasValue" && blog.contents.length == 0 && id) ||
+      userData.state === "hasError"
+    ) {
+      navigate("/blogs");
+    }
+  }, [blog, navigate]);
   const [loading, setLoading] = useState<Boolean>(false);
-  let postData: CreatePostType = {
-    title: "",
-    content: "",
-  };
+  const [postData, setPostData] = useState<CreatePostType>({
+    title: blogExists ? blog.contents[0].title : "",
+    content: blogExists ? blog.contents[0].content : "",
+  });
   const handleClick = async () => {
     setLoading(true);
     try {
-      const res = await axios.post(`${BACKEND_URL}/api/v1/blog`, postData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      console.log(res);
+      blogExists
+        ? await axios.put(
+            `${BACKEND_URL}/api/v1/blog`,
+            {
+              ...postData,
+              id: blog.contents[0].id,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          )
+        : await axios.post(`${BACKEND_URL}/api/v1/blog`, postData, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
       setLoading(false);
       navigate("/blogs");
     } catch (e: any) {
@@ -64,13 +92,25 @@ const Post = () => {
         disabled={loading ? true : undefined}
         className="bg-tertiary placeholder:text-textsecondary w-3/4 my-2 text-textsecondary text-lg"
         placeholder="Title"
-        onChange={(e) => (postData.title = e.target.value)}
+        value={postData.title}
+        onChange={(e) =>
+          setPostData((postData) => ({
+            ...postData,
+            title: e.target.value,
+          }))
+        }
       />
       <Textarea
         disabled={loading ? true : undefined}
         className="bg-tertiary placeholder:text-textsecondary w-3/4 flex-grow my-2 text-textsecondary"
         placeholder="Content"
-        onChange={(e) => (postData.content = e.target.value)}
+        value={postData.content}
+        onChange={(e) =>
+          setPostData((postData) => ({
+            ...postData,
+            content: e.target.value,
+          }))
+        }
       />
       {loading ? (
         <Button disabled className="mt-2 mb-4" variant={"ghost"}>
