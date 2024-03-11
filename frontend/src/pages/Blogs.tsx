@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import usePagination from "@/hooks/usePagination";
 import useCheckSignOut from "@/hooks/useCheckSignOut";
 import searchBlogSelector from "@/store/selectorFamily/searchBlogSelector";
+import userBlogSelector from "@/store/selectorFamily/userBlogSelector";
 
 interface CardProps {
   id: string;
@@ -30,6 +31,7 @@ const Blogs = () => {
   const [search, setSearch] = useState<string>("");
   const user = useRecoilValueLoadable(userAtom);
   const filteredBlogs = useRecoilValueLoadable(searchBlogSelector(search));
+  const userBlogs = useRecoilValueLoadable(userBlogSelector(user.contents.id));
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 3;
   const [indexOfFirstItem, indexOfLastItem] = usePagination(
@@ -53,7 +55,7 @@ const Blogs = () => {
         <Heading className="text-5xl py-3">
           Welcome {user.contents.name}!
         </Heading>
-        <div className="flex items-center justify-center mx-auto mb-3">
+        <div className="flex items-center justify-center mx-4 mb-3">
           <LabelInputContainer className="w-4/5">
             <Input
               id="email"
@@ -95,7 +97,7 @@ const Blogs = () => {
                     date={blog.date}
                     title={blog.title}
                     content={blog.content}
-                    authorId = {blog.author.id}
+                    authorId={blog.author.id}
                   />
                 </div>
               ))
