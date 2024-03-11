@@ -7,17 +7,36 @@ import { useRecoilValueLoadable } from "recoil";
 import userAtom from "@/store/atom/user";
 import { Heading } from "./heading";
 import { Skeleton } from "./skeleton";
+import { BACKEND_URL } from "@/config";
+import axios from "axios";
 
 interface AppBarProps {
   variant: "blog" | "post" | "edit";
+  blogId?: string;
 }
 
-const AppBar: FunctionComponent<AppBarProps> = ({ variant }) => {
+const AppBar: FunctionComponent<AppBarProps> = ({ variant, blogId }) => {
   const navigate = useNavigate();
   const userData = useRecoilValueLoadable(userAtom);
-  const handleClick = () => {
+  const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
+  };
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `${BACKEND_URL}/api/v1/blog/${blogId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log(response);
+      navigate(0);
+    } catch (e: any) {
+      console.log(e);
+    }
   };
   return (
     <div>
@@ -37,15 +56,24 @@ const AppBar: FunctionComponent<AppBarProps> = ({ variant }) => {
               Publish
             </Button>
           ) : (
-            <Button
-              onClick={() => {
-                navigate("/post");
-              }}
-              className={"mr-4"}
-              variant={"outline"}
-            >
-              Edit
-            </Button>
+            <div>
+              <Button
+                onClick={handleDelete}
+                className={"mr-4"}
+                variant={"outline"}
+              >
+                Delete
+              </Button>
+              <Button
+                onClick={() => {
+                  navigate(`/post?id=${blogId}`);
+                }}
+                className={"mr-4"}
+                variant={"outline"}
+              >
+                Edit
+              </Button>
+            </div>
           )}
           <HoverCard>
             <HoverCardTrigger>
@@ -58,7 +86,7 @@ const AppBar: FunctionComponent<AppBarProps> = ({ variant }) => {
               </div>
             </HoverCardTrigger>
             <HoverCardContent className="bg-textmain border-textmain">
-              <Button onClick={handleClick} size={"sm"} variant={"secondary"}>
+              <Button onClick={handleLogout} size={"sm"} variant={"secondary"}>
                 Log Out
               </Button>
             </HoverCardContent>
