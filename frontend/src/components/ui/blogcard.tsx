@@ -39,7 +39,7 @@ const BlogCard: FunctionComponent<BlogCardProps> = ({
             </div>
           </div>
           <div className="font-thin text-xs">{`${Math.ceil(
-            content.length / 100
+            content.length / 300
           )} minute(s) read`}</div>
         </div>
       </div>
