@@ -7,6 +7,7 @@ interface BlogCardProps {
   date: string;
   title: string;
   content: string;
+  authorId: string;
 }
 
 const BlogCard: FunctionComponent<BlogCardProps> = ({
@@ -15,6 +16,7 @@ const BlogCard: FunctionComponent<BlogCardProps> = ({
   date,
   title,
   content,
+  authorId,
 }) => {
   const dateObj = new Date(date);
   date = dateObj.toDateString();
@@ -22,7 +24,7 @@ const BlogCard: FunctionComponent<BlogCardProps> = ({
     <Link to={`/blog?id=${id}`}>
       <div className="flex items-center bg-textsecondary p-5 text-textdark rounded-xl my-1">
         <div className="flex-shrink-0 h-32 w-32">
-          <AvatarImg shape="rounded" id={id} />
+          <AvatarImg shape="rounded" id={authorId} />
         </div>
         <div className="flex flex-col justify-between px-5">
           <div>

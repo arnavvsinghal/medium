@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AppBar from "@/components/ui/appbar";
 import AvatarImg from "@/components/ui/avatar";
-import { userAtom } from "@/store/atom/user";
+import userAtom from "@/store/atom/user";
 import { useRecoilValueLoadable } from "recoil";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Heading } from "@/components/ui/heading";

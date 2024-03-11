@@ -2,7 +2,7 @@ import { useState } from "react";
 import BlogCard from "@/components/ui/blogcard";
 import AppBar from "@/components/ui/appbar";
 import { useRecoilValueLoadable } from "recoil";
-import { userAtom } from "@/store/atom/user";
+import userAtom from "@/store/atom/user";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { LabelInputContainer } from "@/components/ui/label-input-container";
@@ -12,7 +12,7 @@ import { Heading } from "@/components/ui/heading";
 import { Skeleton } from "@/components/ui/skeleton";
 import usePagination from "@/hooks/usePagination";
 import useCheckSignOut from "@/hooks/useCheckSignOut";
-import { searchBlogSelector } from "@/store/selectorFamily/searchBlogSelector";
+import searchBlogSelector from "@/store/selectorFamily/searchBlogSelector";
 
 interface CardProps {
   id: string;
@@ -95,6 +95,7 @@ const Blogs = () => {
                     date={blog.date}
                     title={blog.title}
                     content={blog.content}
+                    authorId = {blog.author.id}
                   />
                 </div>
               ))

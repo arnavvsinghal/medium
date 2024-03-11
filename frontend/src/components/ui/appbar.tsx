@@ -4,7 +4,7 @@ import { Button } from "./button";
 import AvatarImg from "./avatar";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilValueLoadable } from "recoil";
-import { userAtom } from "@/store/atom/user";
+import userAtom from "@/store/atom/user";
 import { Heading } from "./heading";
 import { Skeleton } from "./skeleton";
 
