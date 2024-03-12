@@ -13,7 +13,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import usePagination from "@/hooks/usePagination";
 import useCheckSignOut from "@/hooks/useCheckSignOut";
 import searchBlogSelector from "@/store/selectorFamily/searchBlogSelector";
-import userBlogSelector from "@/store/selectorFamily/userBlogSelector";
 
 interface CardProps {
   id: string;
@@ -31,7 +30,6 @@ const Blogs = () => {
   const [search, setSearch] = useState<string>("");
   const user = useRecoilValueLoadable(userAtom);
   const filteredBlogs = useRecoilValueLoadable(searchBlogSelector(search));
-  const userBlogs = useRecoilValueLoadable(userBlogSelector(user.contents.id));
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 3;
   const [indexOfFirstItem, indexOfLastItem] = usePagination(
@@ -56,7 +54,7 @@ const Blogs = () => {
           Welcome {user.contents.name}!
         </Heading>
         <div className="flex items-center justify-center mx-4 mb-3">
-          <LabelInputContainer className="w-4/5">
+          <LabelInputContainer className="w-4/5 z-10">
             <Input
               id="email"
               placeholder="Search for your favourite Blogs."
@@ -90,7 +88,7 @@ const Blogs = () => {
             filteredBlogs.contents
               .slice(indexOfFirstItem, indexOfLastItem)
               .map((blog: CardProps) => (
-                <div className="w-4/5" key={blog.id}>
+                <div className="w-4/5 z-10" key={blog.id}>
                   <BlogCard
                     id={blog.id}
                     name={blog.author.name}
@@ -115,7 +113,7 @@ const Blogs = () => {
           variant="outline"
           size="icon"
         >
-          <ChevronLeft className="h-3 w-3" />
+          <ChevronLeft className="h-3 w-3 z-10" />
         </Button>
         <Button
           className={
@@ -132,7 +130,7 @@ const Blogs = () => {
           variant="outline"
           size="icon"
         >
-          <ChevronRight className="h-3 w-3" />
+          <ChevronRight className="h-3 w-3  z-10" />
         </Button>
       </div>
     </div>

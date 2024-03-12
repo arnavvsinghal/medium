@@ -22,7 +22,7 @@ const BlogCard: FunctionComponent<BlogCardProps> = ({
   date = dateObj.toDateString();
   return (
     <Link to={`/blog?id=${id}`}>
-      <div className="flex items-center bg-textsecondary p-5 text-textdark rounded-xl my-1">
+      <div className="flex items-center bg-textsecondary p-5 text-textdark rounded-xl my-1 transition ease-in-out hover:scale-105">
         <div className="flex-shrink-0 h-32 w-32">
           <AvatarImg shape="rounded" id={authorId} />
         </div>

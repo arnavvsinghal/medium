@@ -42,23 +42,23 @@ const Blog = () => {
           <Skeleton className="h-40 w-40 mt-4 mb-2 rounded-full" />
           <Skeleton className="h-12 w-40" />
           <Skeleton className="h-12 w-3/4 my-2" />
-          <Skeleton className="h-1 flex-grow w-3/4 my-2" />
+          <Skeleton className="h-1 flex-grow w-3/4 mt-2 mb-6" />
         </div>
       ) : (
         <div className="flex flex-col items-center w-3/4 mx-auto">
-          <div className="h-40 w-40 mt-4 mb-2">
+          <div className="h-40 w-40 mt-4 mb-2 z-10">
             <AvatarImg
               shape="circle"
               id={blogExists ? blog.contents[0].author.id : ""}
             />
           </div>
-          <Heading className="text-5xl">
+          <Heading className="text-5xl z-10">
             {blogExists ? blog.contents[0].author.name : ""}
           </Heading>
-          <div className="text-3xl text-textsecondary mt-4 mb-2">
+          <div className="text-3xl text-textsecondary mt-4 mb-2 z-10">
             {blogExists ? blog.contents[0].title : ""}
           </div>
-          <div className="text-lg text-textsecondary mt-4 mb-2">
+          <div className="text-lg text-textsecondary mt-4 mb-2 z-10">
             {blogExists ? blog.contents[0].content : ""}
           </div>
         </div>

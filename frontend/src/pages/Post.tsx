@@ -81,7 +81,7 @@ const Post = () => {
   return (
     <div className="flex flex-col items-center bg-bgmain min-h-screen">
       <AppBar variant="post" />
-      <div className="h-40 w-40 mt-4 mb-2">
+      <div className="h-40 w-40 mt-4 mb-2  z-10">
         {userData.state == "loading" ? (
           <Skeleton className="h-full w-full rounded-full" />
         ) : (
@@ -91,13 +91,12 @@ const Post = () => {
       {userData.state == "loading" ? (
         <Skeleton className="h-12 w-40" />
       ) : (
-        <Heading className="text-5xl">{userData.contents.name}</Heading>
+        <Heading className="text-5xl z-10">{userData.contents.name}</Heading>
       )}
-      <AvatarImg id={userData.contents.id} shape="circle" />
 
       <Textarea
         disabled={loading ? true : undefined}
-        className="bg-tertiary placeholder:text-textsecondary w-3/4 my-2 text-textsecondary text-lg"
+        className="bg-tertiary placeholder:text-textsecondary w-3/4 my-2 text-textsecondary text-lg z-10"
         placeholder="Title"
         value={postData.title}
         onChange={(e) =>
@@ -109,7 +108,7 @@ const Post = () => {
       />
       <Textarea
         disabled={loading ? true : undefined}
-        className="bg-tertiary placeholder:text-textsecondary w-3/4 flex-grow my-2 text-textsecondary"
+        className="bg-tertiary placeholder:text-textsecondary w-3/4 flex-grow my-2 text-textsecondary z-10"
         placeholder="Content"
         value={postData.content}
         onChange={(e) =>
