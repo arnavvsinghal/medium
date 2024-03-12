@@ -8,7 +8,6 @@ import { Heading } from "@/components/ui/heading";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { BACKEND_URL } from "@/config";
 import { CreatePostType } from "@arnavitis/medium-common";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -32,7 +31,7 @@ const Post = () => {
     ) {
       navigate("/blogs");
     }
-  }, [blog, navigate]);
+  }, [blog, navigate, id]);
   const [loading, setLoading] = useState<Boolean>(false);
   const [postData, setPostData] = useState<CreatePostType>({
     title: blogExists ? blog.contents[0].title : "",
@@ -43,7 +42,7 @@ const Post = () => {
     try {
       blogExists
         ? await axios.put(
-            `${BACKEND_URL}/api/v1/blog`,
+            `${import.meta.env.VITE_BACKEND_URL}/api/v1/blog`,
             {
               ...postData,
               id: blog.contents[0].id,
@@ -54,11 +53,15 @@ const Post = () => {
               },
             }
           )
-        : await axios.post(`${BACKEND_URL}/api/v1/blog`, postData, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          });
+        : await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/api/v1/blog`,
+            postData,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
       setLoading(false);
       navigate("/blogs");
     } catch (e: any) {

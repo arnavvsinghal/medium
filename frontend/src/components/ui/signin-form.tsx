@@ -5,7 +5,6 @@ import { Button } from "./button";
 import { Link, useNavigate } from "react-router-dom";
 import { SigninType, signinInput } from "@arnavitis/medium-common";
 import axios from "axios";
-import { BACKEND_URL } from "@/config";
 import { toast, Toaster } from "sonner";
 import { Loader2 } from "lucide-react";
 import { LabelInputContainer } from "./label-input-container";
@@ -39,7 +38,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = () => {
     try {
       setLoading((loading) => !loading);
       const response = await axios.post(
-        `${BACKEND_URL}/api/v1/user/signin`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/user/signin`,
         formData
       );
       localStorage.setItem("token", response.data.jwtToken);

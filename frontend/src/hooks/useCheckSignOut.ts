@@ -1,4 +1,3 @@
-import { BACKEND_URL } from "@/config";
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +10,7 @@ export const useCheckSignOut = () => {
         return navigate("/");
       }
       try {
-        await axios.get(`${BACKEND_URL}/api/v1/user/me`, {
+        await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/me`, {
           headers: {
             Authorization: `Bearer ${localStorage.token}`,
           },

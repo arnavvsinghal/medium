@@ -7,7 +7,6 @@ import { useRecoilValueLoadable } from "recoil";
 import userAtom from "@/store/atom/user";
 import { Heading } from "./heading";
 import { Skeleton } from "./skeleton";
-import { BACKEND_URL } from "@/config";
 import axios from "axios";
 
 interface AppBarProps {
@@ -25,7 +24,7 @@ const AppBar: FunctionComponent<AppBarProps> = ({ variant, blogId }) => {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `${BACKEND_URL}/api/v1/blog/${blogId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/blog/${blogId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
