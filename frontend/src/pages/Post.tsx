@@ -27,11 +27,14 @@ const Post = () => {
     if (
       blog.state === "hasError" ||
       (blog.state === "hasValue" && blog.contents.length == 0 && id) ||
-      userData.state === "hasError"
+      userData.state === "hasError" ||
+      (userData.state == "hasValue" &&
+        blogExists &&
+        userData.contents.id != blog.contents[0].author.id)
     ) {
       navigate("/blogs");
     }
-  }, [blog, navigate, id]);
+  }, [navigate, blog, id, userData]);
   const [loading, setLoading] = useState<Boolean>(false);
   const [postData, setPostData] = useState<CreatePostType>({
     title: blogExists ? blog.contents[0].title : "",
@@ -40,7 +43,7 @@ const Post = () => {
   const handleClick = async () => {
     setLoading(true);
     try {
-      blogExists
+      const response = blogExists
         ? await axios.put(
             `${import.meta.env.VITE_BACKEND_URL}/api/v1/blog`,
             {
@@ -63,7 +66,8 @@ const Post = () => {
             }
           );
       setLoading(false);
-      navigate("/blogs");
+      navigate(`/blog?id=${response.data.id}`);
+      blogExists ? navigate(0) : null;
     } catch (e: any) {
       toast.error(e.response.data.error || "Error While Posting!", {
         position: "top-center",

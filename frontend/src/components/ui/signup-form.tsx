@@ -1,4 +1,4 @@
-import { ChangeEvent, FunctionComponent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Label } from "./label";
 import { Input } from "./input";
 import { Button } from "./button";
@@ -9,9 +9,7 @@ import { toast, Toaster } from "sonner";
 import { Loader2 } from "lucide-react";
 import { LabelInputContainer } from "./label-input-container";
 
-interface SignUpFormProps {}
-
-const SignUpForm: FunctionComponent<SignUpFormProps> = () => {
+const SignUpForm = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState<SignupType>({
