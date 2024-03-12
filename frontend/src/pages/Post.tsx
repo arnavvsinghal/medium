@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { CreatePostType } from "@arnavitis/medium-common";
 import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { Toaster, toast } from "sonner";
 import useCheckSignOut from "@/hooks/useCheckSignOut";
 import { useSearchParams } from "react-router-dom";
 import specificBlogSelector from "@/store/selectorFamily/specificBlogSelector";
@@ -80,6 +80,7 @@ const Post = () => {
   }
   return (
     <div className="flex flex-col items-center bg-bgmain min-h-screen">
+      <Toaster richColors />
       <AppBar variant="post" />
       <div className="h-40 w-40 mt-4 mb-2  z-10">
         {userData.state == "loading" ? (

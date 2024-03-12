@@ -11,10 +11,10 @@ export const jwtAuth: MiddlewareHandler = async (c, next) => {
 
 export const blogCreateValidation: MiddlewareHandler = async (c, next) => {
   const body = await c.req.json();
-  const { success } = createPostInput.safeParse(body);
-  if (!success) {
+  const res = createPostInput.safeParse(body);
+  if (!res.success) {
     c.status(400);
-    return c.json({ error: "Invalid Input" });
+    return c.json({ error: res.error.issues[0].message });
   }
   c.set("body", body);
   await next();
@@ -22,10 +22,10 @@ export const blogCreateValidation: MiddlewareHandler = async (c, next) => {
 
 export const blogUpdateValidation: MiddlewareHandler = async (c, next) => {
   const body = await c.req.json();
-  const { success } = updatePostInput.safeParse(body);
-  if (!success) {
+  const res = updatePostInput.safeParse(body);
+  if (!res.success) {
     c.status(400);
-    return c.json({ error: "Invalid Input" });
+    return c.json({ error: res.error.issues[0].message });
   }
   c.set("body", body);
   await next();
