@@ -14,21 +14,14 @@ export const signinInput = z.object({
 export type SigninType = z.infer<typeof signinInput>;
 
 export const createPostInput = z.object({
-  title: z.string(),
-  content: z.string(),
+  title: z.string().min(3, {message : "Title must be 3 or more characters long"}),
+  content: z.string().min(5, {message : "Content must be 5 or more characters long"}),
 });
 export type CreatePostType = z.infer<typeof createPostInput>;
 
-export const updatePostInput = z.union([
-  z.object({
-    id: z.string(),
-    title: z.string(),
-    content: z.string().optional(),
-  }),
-  z.object({
-    id: z.string(),
-    title: z.string().optional(),
-    content: z.string(),
-  }),
-]);
+export const updatePostInput =  z.object({
+  id: z.string(),
+  title: z.string().min(3, {message : "Title must be 3 or more characters long"}),
+  content: z.string().min(5, {message : "Content must be 5 or more characters long"}),
+});
 export type UpdatePostType = z.infer<typeof updatePostInput>;
