@@ -18,10 +18,10 @@ export type blogContext = {
   Bindings: Bindings;
   Variables: {
     userId: string;
-    body : {
-      id?:string,
-      title : string,
-      content : string
-    }
+    body: {
+      id?: string;
+      title: string;
+      content: string;
+    };
   };
 };

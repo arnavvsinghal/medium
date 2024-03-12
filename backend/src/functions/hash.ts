@@ -1,4 +1,4 @@
-export async function hashFunction(message:string) : Promise<string> {
+export async function hashFunction(message: string): Promise<string> {
   const encodedMsg = new TextEncoder().encode(message);
   const msgDigest = await crypto.subtle.digest(
     {
@@ -11,4 +11,3 @@ export async function hashFunction(message:string) : Promise<string> {
     .join("");
   return msgHash;
 }
-
