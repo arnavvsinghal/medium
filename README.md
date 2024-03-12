@@ -22,6 +22,15 @@ BitWise is built using the following technologies:
 - [Tailwind CSS](https://tailwindcss.com/) - a utility-first CSS framework
 - [Hono.js](https://hono.dev/) - a web framework for the Edges
 
+## Deployment Technologies
+
+BitWise is deployed using the following technologies:
+
+- [Supabase](https://supabase.com/) - For PostgreSQL database
+- [Prisma Accelerate](https://www.prisma.io/data-platform/accelerate) - For connection pooling
+- [Cloudflare Workers](https://www.cloudflare.com/) - For serverless backend
+- [Vercel](https://vercel.com/) - For frontend 
+
 ## Support
 
 Don't forget to leave a star ⭐️.
