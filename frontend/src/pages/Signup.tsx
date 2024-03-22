@@ -10,12 +10,14 @@ const SignUp = () => {
     },
   ];
   return (
-    <div className="h-screen flex justify-evenly items-center bg-bgmain px-4">
-      <div className="w-1/2 hidden md:block">
-        <TypewriterEffectSmooth words={words} />
-      </div>
-      <div className="bg-main z-10">
-        <SignUpForm />
+    <div className="bg-bgmain">
+      <div className="h-screen flex justify-evenly items-center bg-bgmain px-4 max-w-[1280px] wx-full mx-auto">
+        <div className="w-1/2 hidden md:block">
+          <TypewriterEffectSmooth words={words} />
+        </div>
+        <div className="bg-main z-10">
+          <SignUpForm />
+        </div>
       </div>
     </div>
   );
