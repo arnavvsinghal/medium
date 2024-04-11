@@ -87,9 +87,10 @@ const Blogs = () => {
           ) : (
             filteredBlogs.contents
               .slice(indexOfFirstItem, indexOfLastItem)
-              .map((blog: CardProps) => (
+              .map((blog: CardProps, index:number) => (
                 <div className="w-4/5 z-10" key={blog.id}>
                   <BlogCard
+                    delay={index%3}
                     id={blog.id}
                     name={blog.author.name}
                     date={blog.date}

@@ -26,7 +26,7 @@ const Blog = () => {
     }
   }, [blog, navigate]);
   return (
-    <div className="flex flex-col items-center bg-bgmain min-h-screen">
+    <div className="flex flex-col items-center bg-bgmain min-h-screen pb-12">
       <AppBar
         variant={
           userData.state == "hasValue" &&
