@@ -125,9 +125,16 @@ const Post = () => {
           Please wait
         </Button>
       ) : (
-        <Button onClick={handleClick} className="mt-2 mb-4" variant={"ghost"}>
-          Submit
-        </Button>
+        <div>
+          <Button onClick={()=>{
+            navigate("/blogs");
+          }} className="mt-2 mb-4 mx-1" variant={"ghost"}>
+            Cancel
+          </Button>
+          <Button onClick={handleClick} className="mt-2 mb-4 mx-1" variant={"ghost"}>
+            Submit
+          </Button>
+        </div>
       )}
     </div>
   );
