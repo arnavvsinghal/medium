@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import AvatarImg from "./avatar";
 import { FunctionComponent } from "react";
 import { Reveal } from "../animations/Reveal";
+import { motion } from "framer-motion";
 interface BlogCardProps {
-  delay:number;
+  delay: number;
   id: string;
   name: string;
   date: string;
@@ -11,6 +12,7 @@ interface BlogCardProps {
   content: string;
   authorId: string;
 }
+const transition = { duration: 0.3, ease: [0.43, 0.13, 0.23, 0.96] };
 
 const BlogCard: FunctionComponent<BlogCardProps> = ({
   delay,
@@ -26,7 +28,16 @@ const BlogCard: FunctionComponent<BlogCardProps> = ({
   return (
     <Reveal delay={delay}>
       <Link to={`/blog?id=${id}`}>
-        <div className="flex items-center bg-textsecondary p-5 text-textdark rounded-xl my-1 transition ease-in-out hover:scale-105">
+        <motion.div
+          whileHover={{
+            scale: 1.025,
+          }}
+          whileTap={{
+            scale: 0.925,
+          }}
+          transition={transition}
+          className="flex items-center bg-textsecondary p-5 text-textdark rounded-xl my-1"
+        >
           <div className="flex-shrink-0 h-32 w-32">
             <AvatarImg shape="rounded" id={authorId} />
           </div>
@@ -46,7 +57,7 @@ const BlogCard: FunctionComponent<BlogCardProps> = ({
               content.length / 300
             )} minute(s) read`}</div>
           </div>
-        </div>
+        </motion.div>
       </Link>
     </Reveal>
   );
