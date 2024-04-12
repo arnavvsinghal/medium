@@ -7,6 +7,14 @@ import specificBlogSelector from "@/store/selectorFamily/specificBlogSelector";
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useRecoilValueLoadable } from "recoil";
+import { motion } from "framer-motion";
+
+const transition = {
+  duration: 5,
+  ease: [0.43, 0.13, 0.23, 0.96],
+  type: "spring",
+  damping: 16,
+};
 
 const Blog = () => {
   const userData = useRecoilValueLoadable(userAtom);
@@ -46,12 +54,17 @@ const Blog = () => {
         </div>
       ) : (
         <div className="flex flex-col items-center w-3/4 mx-auto">
-          <div className="h-40 w-40 mt-4 mb-2 z-10">
+          <motion.div
+            className="h-40 w-40 mt-4 mb-2 z-10"
+            initial={{ scale: 0, y: "100vh" }}
+            animate={{ scale: 1, y: 0 }}
+            transition={transition}
+          >
             <AvatarImg
               shape="circle"
               id={blogExists ? blog.contents[0].author.id : ""}
             />
-          </div>
+          </motion.div>
           <Heading className="text-5xl z-10">
             {blogExists ? blog.contents[0].author.name : ""}
           </Heading>
