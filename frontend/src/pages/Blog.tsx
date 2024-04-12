@@ -10,10 +10,12 @@ import { useRecoilValueLoadable } from "recoil";
 import { motion } from "framer-motion";
 
 const transition = {
-  duration: 5,
-  ease: [0.43, 0.13, 0.23, 0.96],
   type: "spring",
-  damping: 16,
+  stiffness: 50,
+  damping: 12,
+  mass: 1,
+  velocity: 0,
+  bounce: 0,
 };
 
 const Blog = () => {
