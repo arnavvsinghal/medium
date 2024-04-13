@@ -26,6 +26,9 @@ const Blog = () => {
   const blog = useRecoilValueLoadable(specificBlogSelector(id));
   const blogExists: Boolean =
     blog.state === "hasValue" && blog.contents.length ? true : false;
+
+  const avatarAnimationControl = useAnimationControls();
+  const contentAnimationControl = useAnimationControls();
   useEffect(() => {
     if (
       blog.state === "hasError" ||
@@ -33,6 +36,12 @@ const Blog = () => {
       userData.state === "hasError"
     ) {
       navigate("/blogs");
+    } else {
+      const sequence = async () => {
+        await avatarAnimationControl.start({ scale: 1, y: 0 });
+        return await contentAnimationControl.start({ opacity: 1 });
+      };
+      sequence();
     }
   }, [blog, navigate]);
 
@@ -61,7 +70,7 @@ const Blog = () => {
           <motion.div
             className="h-40 w-40 mt-4 mb-2 z-10"
             initial={{ scale: 0, y: "100vh" }}
-            animate={{ scale: 1, y: 0 }}
+            animate={avatarAnimationControl}
             transition={transition}
           >
             <AvatarImg
@@ -69,15 +78,31 @@ const Blog = () => {
               id={blogExists ? blog.contents[0].author.id : ""}
             />
           </motion.div>
-          <Heading className="text-5xl z-10">
-            {blogExists ? blog.contents[0].author.name : ""}
-          </Heading>
-          <div className="text-3xl text-textsecondary mt-4 mb-2 z-10">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={contentAnimationControl}
+            transition={{ duration: 1 }}
+          >
+            <Heading className="text-5xl z-10">
+              {blogExists ? blog.contents[0].author.name : ""}
+            </Heading>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={contentAnimationControl}
+            transition={{ duration: 1 }}
+            className="text-3xl text-textsecondary mt-4 mb-2 z-10"
+          >
             {blogExists ? blog.contents[0].title : ""}
-          </div>
-          <div className="text-lg text-textsecondary mt-4 mb-2 z-10">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={contentAnimationControl}
+            transition={{ duration: 1 }}
+            className="text-lg text-textsecondary mt-4 mb-2 z-10"
+          >
             {blogExists ? blog.contents[0].content : ""}
-          </div>
+          </motion.div>
         </div>
       )}
       <motion.div

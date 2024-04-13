@@ -14,7 +14,7 @@ import { Toaster, toast } from "sonner";
 import useCheckSignOut from "@/hooks/useCheckSignOut";
 import { useSearchParams } from "react-router-dom";
 import specificBlogSelector from "@/store/selectorFamily/specificBlogSelector";
-
+import { motion, useIsPresent } from "framer-motion";
 const Post = () => {
   const navigate = useCheckSignOut();
   const userData = useRecoilValueLoadable(userAtom);
@@ -78,6 +78,7 @@ const Post = () => {
   if (userData.state == "hasError") {
     return <div className="bg-bgmain h-screen"></div>;
   }
+  const isPresent = useIsPresent();
   return (
     <div className="flex flex-col items-center bg-bgmain min-h-screen">
       <Toaster richColors />
@@ -136,6 +137,13 @@ const Post = () => {
           </Button>
         </div>
       )}
+      <motion.div
+        initial={{ scaleX: 1 }}
+        animate={{ scaleX: 0, transition: { duration: 0.75, ease: "circOut" } }}
+        exit={{ scaleX: 1, transition: { duration: 0.75, ease: "circIn" } }}
+        style={{ originX: isPresent ? 0 : 1 }}
+        className="fixed top-0 left-0 right-0 bottom-0 bg-accent z-50"
+      />
     </div>
   );
 };
