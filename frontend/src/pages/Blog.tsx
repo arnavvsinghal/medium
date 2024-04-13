@@ -7,7 +7,7 @@ import specificBlogSelector from "@/store/selectorFamily/specificBlogSelector";
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useRecoilValueLoadable } from "recoil";
-import { motion } from "framer-motion";
+import { motion, useAnimationControls, useIsPresent } from "framer-motion";
 
 const transition = {
   type: "spring",
@@ -35,6 +35,8 @@ const Blog = () => {
       navigate("/blogs");
     }
   }, [blog, navigate]);
+
+  const isPresent = useIsPresent();
   return (
     <div className="flex flex-col items-center bg-bgmain min-h-screen pb-12">
       <AppBar
@@ -78,6 +80,13 @@ const Blog = () => {
           </div>
         </div>
       )}
+      <motion.div
+        initial={{ scaleX: 1 }}
+        animate={{ scaleX: 0, transition: { duration: 0.75, ease: "circOut" } }}
+        exit={{ scaleX: 1, transition: { duration: 0.75, ease: "circIn" } }}
+        style={{ originX: isPresent ? 0 : 1 }}
+        className="fixed top-0 left-0 right-0 bottom-0 bg-accent z-50"
+      />
     </div>
   );
 };

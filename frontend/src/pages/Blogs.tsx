@@ -13,7 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import usePagination from "@/hooks/usePagination";
 import useCheckSignOut from "@/hooks/useCheckSignOut";
 import searchBlogSelector from "@/store/selectorFamily/searchBlogSelector";
-
+import { motion, useIsPresent } from "framer-motion";
 interface CardProps {
   id: string;
   author: {
@@ -46,6 +46,7 @@ const Blogs = () => {
   if (filteredBlogs.state == "hasError" || user.state == "hasError") {
     return <div className="bg-bgmain h-screen"></div>;
   }
+  const isPresent = useIsPresent();
   return (
     <div className="flex flex-col justify-between bg-bgmain min-h-screen">
       <div className="flex-grow">
@@ -134,6 +135,13 @@ const Blogs = () => {
           <ChevronRight className="h-3 w-3  z-10" />
         </Button>
       </div>
+      <motion.div
+        initial={{ scaleX: 1 }}
+        animate={{ scaleX: 0, transition: { duration: 0.75, ease: "circOut" } }}
+        exit={{ scaleX: 1, transition: { duration: 0.75, ease: "circIn" } }}
+        style={{ originX: isPresent ? 0 : 1 }}
+        className="fixed top-0 left-0 right-0 bottom-0 bg-accent z-50"
+      />
     </div>
   );
 };
