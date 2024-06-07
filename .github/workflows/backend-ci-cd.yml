@@ -1,4 +1,5 @@
 name: Backend-Deploy
+
 on:
   push:
     paths:
@@ -13,10 +14,19 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy
     steps:
+      - name: Checkout repository
       - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: cd backend && npm install
+
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
-        run: npm run deploy
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
