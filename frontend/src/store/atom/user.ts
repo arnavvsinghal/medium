@@ -12,7 +12,7 @@ export const userAtom = atom({
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       return res.data;
     },

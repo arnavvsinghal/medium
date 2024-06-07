@@ -21,10 +21,10 @@ const transition = {
 const Blog = () => {
   const userData = useRecoilValueLoadable(userAtom);
   const navigate = useNavigate();
-  const [searchParams, _] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const id = searchParams.get("id") ?? "";
   const blog = useRecoilValueLoadable(specificBlogSelector(id));
-  const blogExists: Boolean =
+  const blogExists: boolean =
     blog.state === "hasValue" && blog.contents.length ? true : false;
 
   const avatarAnimationControl = useAnimationControls();
@@ -32,7 +32,7 @@ const Blog = () => {
   useEffect(() => {
     if (
       blog.state === "hasError" ||
-      (blog.state === "hasValue" && blog.contents.length == 0) ||
+      (blog.state === "hasValue" && blog.contents.length === 0) ||
       userData.state === "hasError"
     ) {
       navigate("/blogs");
@@ -43,22 +43,28 @@ const Blog = () => {
       };
       sequence();
     }
-  }, [blog, navigate]);
+  }, [
+    blog,
+    navigate,
+    avatarAnimationControl,
+    contentAnimationControl,
+    userData.state,
+  ]);
 
   const isPresent = useIsPresent();
   return (
     <div className="flex flex-col items-center bg-bgmain min-h-screen pb-12">
       <AppBar
         variant={
-          userData.state == "hasValue" &&
+          userData.state === "hasValue" &&
           blogExists &&
-          userData.contents.id == blog.contents[0].author.id
+          userData.contents.id === blog.contents[0].author.id
             ? "edit"
             : "post"
         }
         blogId={blogExists ? blog.contents[0].id : null}
       />
-      {blog.state == "loading" ? (
+      {blog.state === "loading" ? (
         <div className="flex flex-col items-center w-screen flex-grow">
           <Skeleton className="h-40 w-40 mt-4 mb-2 rounded-full" />
           <Skeleton className="h-12 w-40" />

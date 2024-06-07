@@ -18,28 +18,29 @@ import { motion, useIsPresent } from "framer-motion";
 const Post = () => {
   const navigate = useCheckSignOut();
   const userData = useRecoilValueLoadable(userAtom);
-  const [searchParams, _] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const id = searchParams.get("id") ?? "";
   const blog = useRecoilValueLoadable(specificBlogSelector(id));
-  const blogExists: Boolean =
+  const blogExists: boolean =
     blog.state === "hasValue" && blog.contents.length ? true : false;
   useEffect(() => {
     if (
       blog.state === "hasError" ||
-      (blog.state === "hasValue" && blog.contents.length == 0 && id) ||
+      (blog.state === "hasValue" && blog.contents.length === 0 && id) ||
       userData.state === "hasError" ||
-      (userData.state == "hasValue" &&
+      (userData.state === "hasValue" &&
         blogExists &&
-        userData.contents.id != blog.contents[0].author.id)
+        userData.contents.id !== blog.contents[0].author.id)
     ) {
       navigate("/blogs");
     }
-  }, [navigate, blog, id, userData]);
-  const [loading, setLoading] = useState<Boolean>(false);
+  }, [navigate, blog, id, userData, blogExists]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [postData, setPostData] = useState<CreatePostType>({
     title: blogExists ? blog.contents[0].title : "",
     content: blogExists ? blog.contents[0].content : "",
   });
+  const isPresent = useIsPresent();
   const handleClick = async () => {
     setLoading(true);
     try {
@@ -54,7 +55,7 @@ const Post = () => {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
-            }
+            },
           )
         : await axios.post(
             `${import.meta.env.VITE_BACKEND_URL}/api/v1/blog`,
@@ -63,11 +64,13 @@ const Post = () => {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
-            }
+            },
           );
       setLoading(false);
       navigate(`/blog?id=${response.data.id}`);
-      blogExists ? navigate(0) : null;
+      if (blogExists) {
+        navigate(0);
+      }
     } catch (e: any) {
       toast.error(e.response.data.error || "Error While Posting!", {
         position: "top-center",
@@ -75,22 +78,22 @@ const Post = () => {
       setLoading(false);
     }
   };
-  if (userData.state == "hasError") {
+  if (userData.state === "hasError") {
     return <div className="bg-bgmain h-screen"></div>;
   }
-  const isPresent = useIsPresent();
+
   return (
     <div className="flex flex-col items-center bg-bgmain min-h-screen">
       <Toaster richColors />
       <AppBar variant="post" />
       <div className="h-40 w-40 mt-4 mb-2  z-10">
-        {userData.state == "loading" ? (
+        {userData.state === "loading" ? (
           <Skeleton className="h-full w-full rounded-full" />
         ) : (
           <AvatarImg shape="circle" id={userData.contents.id} />
         )}
       </div>
-      {userData.state == "loading" ? (
+      {userData.state === "loading" ? (
         <Skeleton className="h-12 w-40" />
       ) : (
         <Heading className="text-5xl z-10">{userData.contents.name}</Heading>
@@ -127,12 +130,20 @@ const Post = () => {
         </Button>
       ) : (
         <div>
-          <Button onClick={()=>{
-            navigate("/blogs");
-          }} className="mt-2 mb-4 mx-1" variant={"ghost"}>
+          <Button
+            onClick={() => {
+              navigate("/blogs");
+            }}
+            className="mt-2 mb-4 mx-1"
+            variant={"ghost"}
+          >
             Cancel
           </Button>
-          <Button onClick={handleClick} className="mt-2 mb-4 mx-1" variant={"ghost"}>
+          <Button
+            onClick={handleClick}
+            className="mt-2 mb-4 mx-1"
+            variant={"ghost"}
+          >
             Submit
           </Button>
         </div>

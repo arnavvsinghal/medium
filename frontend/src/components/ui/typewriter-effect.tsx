@@ -32,7 +32,7 @@ export const TypewriterEffectSmooth = ({
                   key={`char-${index}`}
                   className={cn(
                     `dark:text-white text-textsecondary`,
-                    word.className
+                    word.className,
                   )}
                 >
                   {char}
@@ -86,7 +86,7 @@ export const TypewriterEffectSmooth = ({
         }}
         className={cn(
           "block rounded-sm w-[4px] h-7 md:h-9 lg:h-12 bg-quaternary",
-          cursorClassName
+          cursorClassName,
         )}
       ></motion.span>
     </div>

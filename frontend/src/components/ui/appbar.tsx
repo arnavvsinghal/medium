@@ -17,10 +17,12 @@ interface AppBarProps {
 const AppBar: FunctionComponent<AppBarProps> = ({ variant, blogId }) => {
   const navigate = useNavigate();
   const userData = useRecoilValueLoadable(userAtom);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
   };
+
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
@@ -29,7 +31,7 @@ const AppBar: FunctionComponent<AppBarProps> = ({ variant, blogId }) => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       console.log(response);
       navigate(0);
@@ -37,6 +39,40 @@ const AppBar: FunctionComponent<AppBarProps> = ({ variant, blogId }) => {
       console.log(e);
     }
   };
+
+  let buttons = null;
+
+  if (variant === "blog") {
+    buttons = (
+      <Button
+        onClick={() => {
+          navigate("/post");
+        }}
+        className={"mr-4"}
+        variant={"outline"}
+      >
+        Publish
+      </Button>
+    );
+  } else if (variant === "edit") {
+    buttons = (
+      <>
+        <Button onClick={handleDelete} className={"mr-4"} variant={"outline"}>
+          Delete
+        </Button>
+        <Button
+          onClick={() => {
+            navigate(`/post?id=${blogId}`);
+          }}
+          className={"mr-4"}
+          variant={"outline"}
+        >
+          Edit
+        </Button>
+      </>
+    );
+  }
+
   return (
     <div>
       <div className="flex h-16 px-8 justify-between items-center bg-bgmain ">
@@ -44,40 +80,11 @@ const AppBar: FunctionComponent<AppBarProps> = ({ variant, blogId }) => {
           <Heading className="text-4xl">Bitwise</Heading>
         </Link>
         <div className="flex">
-          {variant == "post" ? null : variant == "blog" ? (
-            <Button
-              onClick={() => {
-                navigate("/post");
-              }}
-              className={"mr-4"}
-              variant={"outline"}
-            >
-              Publish
-            </Button>
-          ) : (
-            <div>
-              <Button
-                onClick={handleDelete}
-                className={"mr-4"}
-                variant={"outline"}
-              >
-                Delete
-              </Button>
-              <Button
-                onClick={() => {
-                  navigate(`/post?id=${blogId}`);
-                }}
-                className={"mr-4"}
-                variant={"outline"}
-              >
-                Edit
-              </Button>
-            </div>
-          )}
+          {buttons}
           <HoverCard>
             <HoverCardTrigger>
               <div className="h-10 w-10">
-                {userData.state == "loading" ? (
+                {userData.state === "loading" ? (
                   <Skeleton className="h-full w-full rounded-full" />
                 ) : (
                   <AvatarImg shape="circle" id={userData.contents.id} />

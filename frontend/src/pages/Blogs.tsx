@@ -34,19 +34,19 @@ const Blogs = () => {
   const itemsPerPage = 3;
   const [indexOfFirstItem, indexOfLastItem] = usePagination(
     currentPage,
-    itemsPerPage
+    itemsPerPage,
   );
   let debounceSearch = "";
-  const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const handleClick = () => {
     setLoading((loading) => !loading);
     setSearch(debounceSearch);
     setLoading((loading) => !loading);
   };
-  if (filteredBlogs.state == "hasError" || user.state == "hasError") {
+  const isPresent = useIsPresent();
+  if (filteredBlogs.state === "hasError" || user.state === "hasError") {
     return <div className="bg-bgmain h-screen"></div>;
   }
-  const isPresent = useIsPresent();
   return (
     <div className="flex flex-col justify-between bg-bgmain min-h-screen">
       <div className="flex-grow">
@@ -79,7 +79,7 @@ const Blogs = () => {
           )}
         </div>
         <div className="flex flex-col items-center">
-          {filteredBlogs.state == "loading" ? (
+          {filteredBlogs.state === "loading" ? (
             <div className="h-full w-full flex flex-col items-center">
               <Skeleton className="w-4/5 h-[168px] my-1 rounded-xl" />
               <Skeleton className="w-4/5 h-[168px] my-1 rounded-xl" />
@@ -88,10 +88,10 @@ const Blogs = () => {
           ) : (
             filteredBlogs.contents
               .slice(indexOfFirstItem, indexOfLastItem)
-              .map((blog: CardProps, index:number) => (
+              .map((blog: CardProps, index: number) => (
                 <div className="w-4/5 z-10" key={blog.id}>
                   <BlogCard
-                    delay={index%3}
+                    delay={index % 3}
                     id={blog.id}
                     name={blog.author.name}
                     date={blog.date}
@@ -107,7 +107,7 @@ const Blogs = () => {
       <div className="flex items-center justify-center my-3">
         <Button
           className={
-            currentPage == 1 ? "pointer-events-none opacity-50 mx-2" : "mx-2"
+            currentPage === 1 ? "pointer-events-none opacity-50 mx-2" : "mx-2"
           }
           onClick={() => {
             setCurrentPage(currentPage - 1);
@@ -119,8 +119,8 @@ const Blogs = () => {
         </Button>
         <Button
           className={
-            currentPage ==
-            (filteredBlogs.state == "loading"
+            currentPage ===
+            (filteredBlogs.state === "loading"
               ? 1
               : Math.ceil(filteredBlogs.contents.length / itemsPerPage))
               ? "pointer-events-none opacity-50 mx-2"

@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from "react";
+import React from "react";
 import { Label } from "./label";
 import { Input } from "./input";
 import { Button } from "./button";
@@ -15,7 +16,7 @@ const SignInForm = () => {
     email: "",
     password: "",
   });
-  const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -37,7 +38,7 @@ const SignInForm = () => {
       setLoading((loading) => !loading);
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/user/signin`,
-        formData
+        formData,
       );
       localStorage.setItem("token", response.data.jwtToken);
       setLoading((loading) => !loading);

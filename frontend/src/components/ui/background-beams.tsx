@@ -61,7 +61,7 @@ export const BackgroundBeams = React.memo(
       <div
         className={cn(
           "absolute  h-full w-full inset-0  [mask-size:40px] [mask-repeat:no-repeat] flex items-center justify-center pointer-events-none",
-          className
+          className,
         )}
       >
         <svg
@@ -81,7 +81,7 @@ export const BackgroundBeams = React.memo(
 
           {paths.map((path, index) => (
             <motion.path
-              key={`path-` + index}
+              key={`path-${index}`}
               d={path}
               stroke={`url(#linearGradient-${index})`}
               strokeOpacity="0.4"
@@ -133,7 +133,7 @@ export const BackgroundBeams = React.memo(
         </svg>
       </div>
     );
-  }
+  },
 );
 
 BackgroundBeams.displayName = "BackgroundBeams";

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export const useCheckSignIn = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    const useEffectAsync = async () => {
+    const AsyncUseEffect = async () => {
       if (localStorage.token) {
         try {
           await axios.get(
@@ -14,7 +14,7 @@ export const useCheckSignIn = () => {
               headers: {
                 Authorization: `Bearer ${localStorage.token}`,
               },
-            }
+            },
           );
           navigate("/blogs");
         } catch (err) {
@@ -23,7 +23,7 @@ export const useCheckSignIn = () => {
         }
       }
     };
-    useEffectAsync();
+    AsyncUseEffect();
   }, [navigate]);
 };
 export default useCheckSignIn;

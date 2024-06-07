@@ -11,7 +11,7 @@ export const searchBlogSelector = selectorFamily({
       const filteredData = blogData.blogs.filter(
         (item: blogAtom) =>
           item.title.toLowerCase().includes(filter.toLowerCase()) ||
-          item.author.name.toLowerCase().includes(filter.toLowerCase())
+          item.author.name.toLowerCase().includes(filter.toLowerCase()),
       );
       return filteredData;
     },

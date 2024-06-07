@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export const useCheckSignOut = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    const useEffectAsync = async () => {
+    const AsyncUseEffect = async () => {
       if (!localStorage.token) {
         return navigate("/");
       }
@@ -20,7 +20,7 @@ export const useCheckSignOut = () => {
         navigate("/");
       }
     };
-    useEffectAsync();
+    AsyncUseEffect();
   }, [navigate]);
   return navigate;
 };

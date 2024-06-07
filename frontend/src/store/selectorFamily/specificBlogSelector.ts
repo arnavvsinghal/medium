@@ -9,7 +9,7 @@ export const specificBlogSelector = selectorFamily({
     ({ get }) => {
       const blogData = get(blogAtomFamily(filter));
       const filteredData = blogData.blogs.filter(
-        (item: blogAtom) => item.id === filter
+        (item: blogAtom) => item.id === filter,
       );
       return filteredData;
     },

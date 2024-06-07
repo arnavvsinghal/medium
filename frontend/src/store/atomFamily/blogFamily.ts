@@ -5,14 +5,14 @@ export const blogAtomFamily = atomFamily({
   key: "BlogAtom",
   default: selectorFamily({
     key: "BlogAtom/Default",
-    get: (_) => async () => {
+    get: () => async () => {
       const res = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/blog/bulk`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
       return res.data;
     },
