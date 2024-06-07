@@ -22,8 +22,8 @@ jobs:
         with:
           node-version: '20'
 
-      # - name: Install dependencies
-      #   run: cd backend && npm install
+      - name: Install dependencies
+        run: cd backend && npm install
 
       # - name: Deploy
       #   uses: cloudflare/wrangler-action@v3
