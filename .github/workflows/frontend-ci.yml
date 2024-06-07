@@ -5,6 +5,7 @@ on:
     paths:
       - 'frontend/**'
   pull_request:
+    types: [opened, reopened]
     paths:
       - 'frontend/**'
 
