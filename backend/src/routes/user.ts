@@ -13,6 +13,12 @@ import { jwtAuth } from "../middlewares/blogMiddlewares";
 
 const userRouter = new Hono<userContext>();
 
+userRouter.get("/test", async (c) => {
+  // const userId = c.get("jwtPayload").id;
+  return c.json({
+    id: "uaa",
+  });
+});
 userRouter.get("/me", jwtAuth, async (c) => {
   const userId = c.get("jwtPayload").id;
   return c.json({
