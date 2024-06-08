@@ -2,15 +2,10 @@ name: Backend CI/CD
 
 on:
   push:
-    paths:
-      - 'backend/**'
-  pull_request:
-    types: [opened, reopened]
-    paths:
-      - 'backend/**'
+    branches: ["main"]
 
 jobs:
-  lint-and-build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: ${{ secrets.PRISMA_DATABASE_URL }}
@@ -38,11 +33,3 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: cd backend && wrangler deploy --name backend --compatibility-date 2023-12-01 --var JWT_SECRET:$JWT_SECRET DATABASE_URL:$DATABASE_URL --minify src/index.ts
-        
-
-      # - name: Deploy 
-      #   uses: cloudflare/wrangler-action@v3
-      #   with:
-      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      #     workingDirectory: backend
