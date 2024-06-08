@@ -1,0 +1,29 @@
+name: Backend CI/CD
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+  pull_request:
+    types: [opened, reopened]
+    paths:
+      - 'backend/**'
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: cd backend && npm install
+
+      - name: Run build
+        run: cd backend && npm run build
