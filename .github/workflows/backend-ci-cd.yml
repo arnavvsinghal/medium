@@ -37,7 +37,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: cd backend && wrangler deploy --name backend --compatibility-date 2023-12-01 --var JWT_SECRET:JWT_SECRET DATABASE_URL:DATABASE_URL --minify src/index.ts
+        run: cd backend && wrangler deploy --name backend --compatibility-date 2023-12-01 --var JWT_SECRET:$JWT_SECRET DATABASE_URL:$DATABASE_URL --minify src/index.ts
         
 
       # - name: Deploy 
