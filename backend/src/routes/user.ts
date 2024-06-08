@@ -16,7 +16,7 @@ const userRouter = new Hono<userContext>();
 userRouter.get("/me", jwtAuth, async (c) => {
   const userId = c.get("jwtPayload").id;
   return c.json({
-    id: "us",
+    id: "u",
   });
 });
 userRouter.get("/info", jwtAuth, async (c) => {
