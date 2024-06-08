@@ -4,7 +4,7 @@ export async function hashFunction(message: string): Promise<string> {
     {
       name: "SHA-256",
     },
-    encodedMsg
+    encodedMsg,
   );
   const msgHash = [...new Uint8Array(msgDigest)]
     .map((b) => b.toString(16).padStart(2, "0"))
