@@ -25,13 +25,18 @@ jobs:
       - name: Install dependencies
         run: cd backend && npm install
 
+      - name: Install dependencies
+        run: cd backend && npm install && npx prisma generate
+
       - name: Install Wrangler
         run: npm install -g wrangler
 
       - name: Publish to Cloudflare
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: cd backend && npm run deploy:prod
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: cd backend && wrangler deploy --name backend --compatibility-date 2023-12-01 --var JWT_SECRET:JWT_SECRET DATABASE_URL:DATABASE_URL --minify src/index.ts
         
 
       # - name: Deploy 
