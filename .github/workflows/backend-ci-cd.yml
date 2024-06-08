@@ -31,7 +31,7 @@ jobs:
       - name: Publish to Cloudflare
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        run: cd backend && npm run deploy
+        run: cd backend && npm run deploy:prod
         
 
       # - name: Deploy 
