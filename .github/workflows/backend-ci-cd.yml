@@ -12,7 +12,8 @@ on:
 jobs:
   lint-and-build:
     runs-on: ubuntu-latest
-
+    env:
+      DATABASE_URL: ${{ secrets.PRISMA_DATABASE_URL }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -26,7 +27,7 @@ jobs:
         run: cd backend && npm install
 
       - name: Install dependencies
-        run: cd backend && npm install && npx prisma generate
+        run: cd backend && npm install && npx prisma generate --no-engine
 
       - name: Install Wrangler
         run: npm install -g wrangler
