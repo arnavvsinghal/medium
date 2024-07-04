@@ -8,7 +8,7 @@ Passionate about tech? Welcome to your new digital hub!
 BitWise is a blogging platform for enthusiasts that want to deep dive into the latest gadgets, analyze breakthroughs, and explore the trends shaping our tech-driven world. 
 Buckle up and get ready to navigate the exciting frontier of technology!
 
-Here is where you can find the website :- https://bitwisebyarnav.vercel.appp
+Here is where you can find the website :- https://bitwisebyarnav.vercel.app
 
 > [!IMPORTANT]  
 > The website is still in beta. Feature requests are welcomed.
