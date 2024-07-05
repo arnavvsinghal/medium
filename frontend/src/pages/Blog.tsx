@@ -75,7 +75,7 @@ const Blog = () => {
         <div className="flex flex-col items-center w-3/4 mx-auto">
           <motion.div
             className="h-40 w-40 mt-4 mb-2 z-10"
-            initial={{ scale: 0, y: "100vh" }}
+            initial={{ scale: 0, y: "50vh" }}
             animate={avatarAnimationControl}
             transition={transition}
           >
