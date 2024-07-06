@@ -53,7 +53,7 @@ const Blog = () => {
 
   const isPresent = useIsPresent();
   return (
-    <div className="flex flex-col items-center bg-bgmain min-h-screen pb-12">
+    <div className="flex flex-col overflow-y-scroll no-scrollbar items-center bg-bgmain min-h-screen max-w-[100vw] pb-12">
       <AppBar
         variant={
           userData.state === "hasValue" &&
