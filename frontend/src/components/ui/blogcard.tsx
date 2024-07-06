@@ -48,7 +48,7 @@ const BlogCard: FunctionComponent<BlogCardProps> = ({
                 <div className="pr-1">&bull;</div>
                 <div className="font-light">{date}</div>
               </div>
-              <div className="text-2xl font-bold">{title.slice(0, 20)}</div>
+              <div className="text-2xl font-bold">{title.slice(0, 50)}</div>
               <div className="text-sm my-2 max-w-full sm:break-words sm:overflow-ellipsi">
                 {`${content.slice(0, 110)}...`}
               </div>
