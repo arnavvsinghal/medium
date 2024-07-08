@@ -10,9 +10,6 @@ Buckle up and get ready to navigate the exciting frontier of technology!
 
 Here is where you can find the website :- https://bitwisebyarnav.vercel.app
 
-> [!IMPORTANT]  
-> The website is still in beta. Feature requests are welcomed.
-
 ## Tech Stack
 
 BitWise is built using the following technologies:
